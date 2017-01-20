@@ -1,0 +1,33 @@
+appname=telecom
+appname2=zfenlly
+libname=libdvm
+libtmp=libbaseaddr.txt
+pidtmp=pid.txt
+
+
+
+
+
+
+str=`ps | grep $appname`
+echo $str
+str3=${str// /,}
+str3=${str3//,,,,/,}
+str3=${str3//,,,/,}
+str3=${str3//,,/,}
+str3=${str3#*,}
+result=${str3%%,*}
+
+echo $result
+echo $result > /mnt/sdcard/$pidtmp
+
+B=`cat /proc/$result/maps | grep $libname`
+a=`cat /proc/$result/maps | grep $libname | grep xp`
+echo $B
+str3=${a// /,}
+str3=${str3%%,*}
+str3=${str3%%-*}
+echo $str3 > /mnt/sdcard/$libtmp
+
+
+exit
