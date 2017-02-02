@@ -11,14 +11,14 @@ class AGDB:
             value = l.split('=')[1].strip("\n").strip('\r')
             if key == "GDB_DIR":
                 global gdb_dir
-                value.replace('Administrator',getpass.getuser())
+                value.replace('Administrator', getpass.getuser())
                 gdb_dir = value
             if key == "ADB_DIR":
                 global adb_dir
                 adb_dir = value
             if key == "GDBSERVER_DIR":
                 global gdbserver_dir
-                value.replace('Administrator',getpass.getuser())
+                value.replace('Administrator', getpass.getuser())
                 gdbserver_dir = value
             if key == "PKG_NAME":
                 global pkg_name
