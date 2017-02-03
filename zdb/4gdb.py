@@ -3,7 +3,8 @@ from device import *
 import AGDBDir
 import sys
 import utils
-
+import logging
+import subprocess
 ########################################################
 
 ################################################
@@ -11,16 +12,23 @@ import utils
 def setPidLibBaseAddr(dev, pid, name):
     cat_script = """
     cat /proc/{}/maps | grep {} | grep xp
-    """.format(pid,name)
+    """.format(pid, name)
     cat_script = " ".join([line.strip() for line in cat_script.splitlines()])
     #print cat_script
-    output, _ = dev.shell([cat_script])
+    #print '############################'
+    try:
+        output, _ = dev.shell([cat_script])
+    except:
+        print 'error: ',cat_script
+        return 1
     #print output
+    #print '############################'
     lba = output.split(" ")[0].split("-")[0]
     f = open('out\\libbaseaddr.txt','w')
     print "write {} to out\\libbaseaddr.txt".format(lba)
     f.write('{}\n'.format(lba))
     f.close()
+    return 0
 
 
 def getLibMemAddr(dev, name):
@@ -74,6 +82,7 @@ if __name__=='__main__':
     dev.remount()
 
 
+    utils.adbForward(dev)
 
     cwd = os.getcwd()
     print ''
@@ -82,8 +91,8 @@ if __name__=='__main__':
     print ''
     print ''
 
-    
-    
+
+
     pkg = (addr['pkg_name'])
     pid = utils.get_pids(dev, pkg)
     print pid
@@ -91,10 +100,31 @@ if __name__=='__main__':
     print (cmd)
     dev.shell_popen(cmd)
 
-    utils.adbForward(dev)
     
+
+
+
+    #log = logging.getLogger("Core.Analysis.Processing")
+
     libname = addr['lib_name']
-    setPidLibBaseAddr(dev, pid[0], libname)
+    INTERPRETER = addr['python_install_dir_name']
+    while True:
+        ret = setPidLibBaseAddr(dev, pid[0], libname)
+        if (ret == 0):
+            break
+        raw_input('continue?')
+
+        '''processor = "Jdb.py"
+        if not os.path.exists(INTERPRETER):
+            log.error("Cannot find INTERPRETER at path \"%s\"." % INTERPRETER)
+            exit(1)
+        pargs = [INTERPRETER, processor]
+        pargs.extend(["--input=inputMd5s"])
+        subprocess.Popen(pargs)
+        raw_input('')
+        setPidLibBaseAddr(dev, pid[0], libname)'''
+
+
     getBaseAddr()
     b2gdbbreak()
 
@@ -102,9 +132,9 @@ if __name__=='__main__':
     os.chdir('{}'.format(addr['gdb_dir']))
     gdb_cmd = ['gdb']
     subprocess.check_call(gdb_cmd)
-    
-    
+
+
 
     #raw_input("")
-    
+
 

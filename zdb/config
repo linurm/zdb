@@ -6,6 +6,7 @@ GDB_DIR=C:\Users\Administrator\AppData\Local\Android\sdk\ndk-bundle\prebuilt\win
 LAUNCH4="dascom.telecom.vipclub.InitActivity"
 LAUNCH1="zybornit.loadlib.MainActivity"
 LAUNCH="com.ctf.fibonacci.MainActivity"
+PYTHON_INSTALL_DIR=C:\Python27\python.exe
 LIBNAME="libcrackme.so"
 APKTOOL_DIR=..\..\apktool
 DEX2JAR_DIR=..\..\dex2jar

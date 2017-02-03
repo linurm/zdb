@@ -44,6 +44,9 @@ class AGDB:
             if key == "APK_NAME":
                 global apk_name
                 apk_name = value
+            if key == "PYTHON_INSTALL_DIR":
+                global python_install_dir_name
+                python_install_dir_name = value
         self.addr['gdb_dir'] = gdb_dir.replace('"','')
         self.addr['adb_dir'] = adb_dir.replace('"','')
         self.addr['gdbserver_dir'] = gdbserver_dir.replace('"','')
@@ -54,6 +57,7 @@ class AGDB:
         self.addr['apktool_dir'] = apktool_dir.replace('"','')
         self.addr['dex2jar_dir'] = dex2jar_dir.replace('"','')
         self.addr['apk_name'] = apk_name.replace('"','')
+        self.addr['python_install_dir_name'] = python_install_dir_name.replace('"','')
         self.addr['ida_file_deviation'] = ida_file_deviation.replace('"','')
         return self.addr
                 
