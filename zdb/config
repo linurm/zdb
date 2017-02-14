@@ -1,7 +1,5 @@
-GDBSERVER_DIR2=C:\Users\zhj\AppData\Local\Android\sdk\ndk-bundle\prebuilt\android-arm\gdbserver
 GDBSERVER_DIR=C:\Users\Administrator\AppData\Local\Android\sdk\ndk-bundle\prebuilt\android-arm\gdbserver
 ADB_DIR=G:\platform-tools
-GDB_DIR2=C:\Users\zhj\AppData\Local\Android\sdk\ndk-bundle\prebuilt\windows-x86_64\bin
 GDB_DIR=C:\Users\Administrator\AppData\Local\Android\sdk\ndk-bundle\prebuilt\windows-x86_64\bin
 LAUNCH4="dascom.telecom.vipclub.InitActivity"
 LAUNCH1="zybornit.loadlib.MainActivity"
@@ -11,7 +9,7 @@ LIBNAME="libcrackme.so"
 APKTOOL_DIR=..\..\apktool
 DEX2JAR_DIR=..\..\dex2jar
 PKG_DIR=..\tmp
-PKG_NAME4="dascom.telecom.vipclub"
+PKG_NAME4="dascom.telecom.vipclub_55"
 PKG_NAME="com.msc.fibonacci"
 PKG_NAME5="zybornit.loadlib"
 PKG_NAME3="Castle_Story_Desert_Nightsv1.5.0.6s55g"

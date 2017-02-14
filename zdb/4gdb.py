@@ -91,18 +91,12 @@ if __name__=='__main__':
     print ''
     print ''
 
-
-
     pkg = (addr['pkg_name'])
     pid = utils.get_pids(dev, pkg)
     print pid
     cmd = ["/data/gdbserver",":23946","--attach","{}".format(pid[0])]
     print (cmd)
     dev.shell_popen(cmd)
-
-    
-
-
 
     #log = logging.getLogger("Core.Analysis.Processing")
 
@@ -132,8 +126,6 @@ if __name__=='__main__':
     os.chdir('{}'.format(addr['gdb_dir']))
     gdb_cmd = ['gdb']
     subprocess.check_call(gdb_cmd)
-
-
 
     #raw_input("")
 

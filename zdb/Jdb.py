@@ -15,6 +15,9 @@ if __name__=='__main__':
         if restart_jdb == 'r':
             print 'restart'
             sys.exit(4)#return 1
+        elif restart_jdb.startswith('8'):
+            jdb_port = restart_jdb
+        print jdb_port
         utils.jdb_connect(jdb_port)
 
 

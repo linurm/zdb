@@ -14,46 +14,18 @@ if __name__=='__main__':
     dev.remount()
 
     while True:
-    
+
         am_cmd = ["am", "start"]
-        am_cmd.append("-D")
+        #am_cmd.append("-D")
         component_name = "{}/{}".format(addr['pkg_name'], addr['launch_name'])
         am_cmd.append(component_name)
         print ("Launching activity {}...".format(component_name))
         (rc, _, _) = dev.shell_nocheck(am_cmd)
         if rc != 0:
             utils.error("Failed to start {}".format(component_name))
+        break
 
-        pkg = (addr['pkg_name'])
-        pid = utils.get_pids(dev, pkg)
-        #print 
-        #print '{}'.format(addr['pkg_name'])
-        print 'pid = {}'.format(pid)
-        #pid = (utils.get_pids(dev, "dascom.telecom.vipclub"))
-        #print 'pid = {}'.format(pid)
-        
-        cmd = "python {}".format('jdb.py')
-        
-        '''p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
-        ret = p1.stdout.read()'''
-        #with open(os.devnull, 'wb') as devnull:
-            #utils.split_lines
-            #, stdout=devnull, stderr=devnull
-        try:
-            ret = (subprocess.check_call(cmd))
-        except subprocess.CalledProcessError,c:
-            print c.output, c.returncode
-            if c.returncode == 4:
-                continue
-            else:
-                break
-        #ret = os.popen("python {}".format(cmd))
-        
-        print "-----------", ret
-        if ret == 4:
-            print 'ret code is ' + ret
-            #break
-    
+
     print ("exit  ")
     #print p1
 '''
