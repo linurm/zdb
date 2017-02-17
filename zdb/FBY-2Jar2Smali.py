@@ -26,7 +26,7 @@ if __name__=='__main__':
     cmd = 'java -jar {}\\baksmali-2.1.3.jar {}\\{}.dex -o {}\\smali'.format(smali_dir,pkg_path, apk_name, pkg_path)
     print cmd
     os.system("{}".format(cmd))
-    raw_input('')
+    #raw_input('')
 '''
 %ADB_DIR%\adb shell am start -D -n dascom.telecom.vipclub/dascom.telecom.vipclub.InitActivity
 rem %ADB_DIR%\adb shell am start -D -n zj.zfenlly.tools/zj.zfenlly.main.MainActivity
