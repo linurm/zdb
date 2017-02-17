@@ -3,6 +3,4 @@ set step-mode on
 set disassemble-next on
 set arm fallback-mode auto
 set arm force-mode auto
-b *0x763aa35c
-b *0x763a57a9
-b *0x763a57ed
+b *0x78757184
