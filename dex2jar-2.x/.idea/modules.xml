@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/d2j-base-cmd/d2j-base-cmd.iml" filepath="$PROJECT_DIR$/.idea/modules/d2j-base-cmd/d2j-base-cmd.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/d2j-j6/d2j-j6.iml" filepath="$PROJECT_DIR$/.idea/modules/d2j-j6/d2j-j6.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/d2j-jasmin/d2j-jasmin.iml" filepath="$PROJECT_DIR$/.idea/modules/d2j-jasmin/d2j-jasmin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/d2j-smali/d2j-smali.iml" filepath="$PROJECT_DIR$/.idea/modules/d2j-smali/d2j-smali.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dex-ir/dex-ir.iml" filepath="$PROJECT_DIR$/.idea/modules/dex-ir/dex-ir.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dex-reader/dex-reader.iml" filepath="$PROJECT_DIR$/.idea/modules/dex-reader/dex-reader.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dex-reader-api/dex-reader-api.iml" filepath="$PROJECT_DIR$/.idea/modules/dex-reader-api/dex-reader-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dex-tools/dex-tools.iml" filepath="$PROJECT_DIR$/.idea/modules/dex-tools/dex-tools.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dex-translator/dex-translator.iml" filepath="$PROJECT_DIR$/.idea/modules/dex-translator/dex-translator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dex-writer/dex-writer.iml" filepath="$PROJECT_DIR$/.idea/modules/dex-writer/dex-writer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dex2jar.iml" filepath="$PROJECT_DIR$/.idea/modules/dex2jar.iml" />
+    </modules>
+  </component>
+</project>
