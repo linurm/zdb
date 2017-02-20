@@ -19,11 +19,13 @@ if __name__=='__main__':
     
 
     # rebuild
+    print '########################'
     print cmd
     os.system("{}".format(cmd))
 
     #apk to jar
     cmd = 'jarsigner -verbose -keystore android.keystore -signedjar {}\\{}-signed.apk {}\\{}\\dist\\{}.apk android.keystore'.format(pkg_path, apk_name, pkg_path, apk_name, apk_name)
+    print '########################'
     print cmd
     os.system("{}".format(cmd))
     #input("")
