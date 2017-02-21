@@ -16,131 +16,93 @@
  */
 package com.googlecode.dex2jar.tools;
 
-import com.googlecode.d2j.dex.Dex2jar;
-import com.googlecode.d2j.reader.BaseDexFileReader;
-import com.googlecode.d2j.reader.DexFileReader;
-import com.googlecode.d2j.reader.MultiDexFileReader;
-import com.googlecode.dex2jar.ir.ET;
-
 import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-@BaseCmd.Syntax(cmd = "d2j-modefy-class", syntax = "[options] <file0> [file1 ... fileN]", desc = "class modefy")
+@BaseCmd.Syntax(cmd = "d2j-modefy-class", syntax = "[options] <dir>", desc = "Convert jar to dex by invoking dx.")
 public class ClassModefy extends BaseCmd {
-
     public static void main(String... args) {
         new ClassModefy().doMain(args);
     }
 
-    @Opt(opt = "e", longOpt = "exception-file", description = "detail exception file, default is $current_dir/[file-name]-error.zip", argName = "file")
-    private Path exceptionFile;
     @Opt(opt = "f", longOpt = "force", hasArg = false, description = "force overwrite")
     private boolean forceOverwrite = false;
-    @Opt(opt = "n", longOpt = "not-handle-exception", hasArg = false, description = "not handle any exceptions thrown by dex2jar")
-    private boolean notHandleException = false;
-    @Opt(opt = "o", longOpt = "output", description = "output .jar file, default is $current_dir/[file-name]-dex2jar.jar", argName = "out-jar-file")
+    @Opt(opt = "o", longOpt = "output", description = "output .dex file, default is $current_dir/[jar-name]-jar2dex.dex", argName = "out-dex-file")
     private Path output;
-
-    @Opt(opt = "r", longOpt = "reuse-reg", hasArg = false, description = "reuse register while generate java .class file")
-    private boolean reuseReg = false;
-
-    @Opt(opt = "s", hasArg = false, description = "same with --topological-sort/-ts")
-    private boolean topologicalSort1 = false;
-
-    @Opt(opt = "ts", longOpt = "topological-sort", hasArg = false, description = "sort block by topological, that will generate more readable code, default enabled")
-    private boolean topologicalSort = false;
-
-    @Opt(opt = "d", longOpt = "debug-info", hasArg = false, description = "translate debug info")
-    private boolean debugInfo = false;
-
-    @Opt(opt = "p", longOpt = "print-ir", hasArg = false, description = "print ir to System.out")
-    private boolean printIR = false;
-
-    @Opt(opt = "os", longOpt = "optmize-synchronized", hasArg = false, description = "optimize-synchronized")
-    private boolean optmizeSynchronized = false;
-
-    @Opt(opt = "nc", longOpt = "no-code", hasArg = false, description = "")
-    private boolean noCode = false;
 
     @Override
     protected void doCommandLine() throws Exception {
-        if (remainingArgs.length == 0) {
+        if (remainingArgs.length != 1) {
             usage();
             return;
         }
-		int a = 0;
 
-		if(remainingArgs.length != 0)
-			a = 1;
-
-		
-
-        if ((exceptionFile != null || output != null) && remainingArgs.length != 1) {
-            System.err.println("-e/-o can only used with one file");
-            return;
-        }
-        if (debugInfo && reuseReg) {
-            System.err.println("-d/-r can not use together");
+        Path jar = new File(remainingArgs[0]).toPath();
+		//System.err.println("zj " + jar.toString());//..\tmp\no1\no1.jar
+        if (!Files.exists(jar)) {
+            System.err.println(jar + " is not exists");
+            usage();
             return;
         }
 
-        Path currentDir = new File(".").toPath();
-		System.err.println("" + currentDir.toString());
-
-		//remainingArgs = new String[]{"F:\fbyapk\cmd\tmp\no1\no1-test.jar"};
-
-		/*usage();
-		if (a == 1){
-			return;
-		}*/
-
-        if (output != null) {
-            if (Files.exists(output) && !forceOverwrite) {
-                System.err.println(output + " exists, use --force to overwrite");
-                return;
-            }
-        } else {
-            for (String fileName : remainingArgs) {
-                Path file = currentDir.resolve(getBaseName(new File(fileName).toPath()) + "-dex2jar.jar");
-                if (Files.exists(file) && !forceOverwrite) {
-                    System.err.println(file + " exists, use --force to overwrite");
-                    return;
-                }
+        if (output == null) {
+            if (Files.isDirectory(jar)) {
+                output = new File(jar.getFileName() + "-jar2dex.dex").toPath();
+            } else {
+                output = new File(getBaseName(jar.getFileName().toString()) + "-jar2dex.dex").toPath();
             }
         }
 
-        for (String fileName : remainingArgs) {
-            long baseTS = System.currentTimeMillis();
-            String baseName = getBaseName(new File(fileName).toPath());
-            Path file = output == null ? currentDir.resolve(baseName + "-dex2jar.jar") : output;
-            System.err.println("dex2jar " + fileName + " -> " + file);
-
-            BaseDexFileReader reader = MultiDexFileReader.open(Files.readAllBytes(new File(fileName).toPath()));
-            BaksmaliBaseDexExceptionHandler handler = notHandleException ? null : new BaksmaliBaseDexExceptionHandler();
-            Dex2jar.from(reader).withExceptionHandler(handler).reUseReg(reuseReg).topoLogicalSort()
-                    .skipDebug(!debugInfo).optimizeSynchronized(this.optmizeSynchronized).printIR(printIR)
-                    .noCode(noCode).to(file);
-
-            if (!notHandleException) {
-                if (handler.hasException()) {
-                    Path errorFile = exceptionFile == null ? currentDir.resolve(baseName + "-error.zip")
-                            : exceptionFile;
-                    System.err.println("Detail Error Information in File " + errorFile);
-                    System.err.println(BaksmaliBaseDexExceptionHandler.REPORT_MESSAGE);
-                    handler.dump(errorFile, orginalArgs);
-                }
-            }
-            long endTS = System.currentTimeMillis();
-            System.err.println(String.format("%.2f", (float) (endTS - baseTS) / 1000));
+        if (Files.exists(output) && !forceOverwrite) {
+            System.err.println(output + " exists, use --force to overwrite");
+            usage();
+            return;
         }
-    }
 
-    @Override
-    protected String getVersionString() {
-        return "reader-" + DexFileReader.class.getPackage().getImplementationVersion() + ", translator-"
-                + Dex2jar.class.getPackage().getImplementationVersion() + ", ir-"
-                + ET.class.getPackage().getImplementationVersion();
-    }
+        Path tmp = null;
+        final Path realJar;
+        try {
+            if (Files.isDirectory(jar)) {
+                realJar = Files.createTempFile("d2j", ".jar");
+                tmp = realJar;
+                System.out.println("zipping " + jar + " -> " + realJar);
+                try (FileSystem fs = createZip(realJar)) {
+                    final Path outRoot = fs.getPath("/");
+                    walkJarOrDir(jar, new FileVisitorX() {
+                        @Override
+                        public void visitFile(Path file, String relative) throws IOException {
+                            if (file.getFileName().toString().endsWith(".class")) {
+                                Files.copy(file, outRoot.resolve(relative));
+                            }
+                        }
+                    });
+                }
+            } else {
+                realJar = jar;
+            }
 
+            System.out.println("jar2dex " + realJar + " -> " + output);
+
+            Class<?> c = Class.forName("com.android.dx.command.Main");
+            Method m = c.getMethod("main", String[].class);
+
+            List<String> ps = new ArrayList<String>();
+            ps.addAll(Arrays.asList("--dex", "--no-strict", "--output=" + output.toAbsolutePath().toString(), realJar
+                    .toAbsolutePath().toString()));
+            System.out.println("call com.android.dx.command.Main.main" + ps);
+            m.invoke(null, new Object[] { ps.toArray(new String[ps.size()]) });
+        } finally {
+            if (tmp != null) {
+                Files.deleteIfExists(tmp);
+            }
+        }
+
+    }
 }

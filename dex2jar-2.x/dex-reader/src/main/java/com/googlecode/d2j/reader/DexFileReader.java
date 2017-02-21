@@ -561,6 +561,7 @@ public class DexFileReader implements BaseDexFileReader {
      */
     @Override
     public void accept(DexFileVisitor dv, int config) {
+    	//System.err.println("zj accept " + class_defs_size);//1468
         for (int cid = 0; cid < class_defs_size; cid++) {
             accept(dv, cid, config);
         }

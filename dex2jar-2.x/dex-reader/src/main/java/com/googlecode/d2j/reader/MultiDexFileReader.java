@@ -33,12 +33,16 @@ public class MultiDexFileReader implements BaseDexFileReader {
             throw new IOException("File too small to be a dex/zip");
         }
         if ("dex".equals(new String(data, 0, 3, StandardCharsets.ISO_8859_1))) {// dex
+        	//System.err.println("zj dex");
             return new DexFileReader(data);
-        } else if ("PK".equals(new String(data, 0, 2, StandardCharsets.ISO_8859_1))) {// ZIP
+        } else if ("PK".equals(new String(data, 0, 2, StandardCharsets.ISO_8859_1))) {// ZIP apk
+        	//System.err.println("zj PK");
             TreeMap<String, DexFileReader> dexFileReaders = new TreeMap<>();
             try (ZipFile zipFile = new ZipFile(data)) {
                 for (ZipEntry e : zipFile.entries()) {
+					//System.err.println("zj 1" + e.toString());//lib/armeabi/libcrackme.so
                     String entryName = e.getName();
+					//System.err.println("zj 2" + entryName);//lib/armeabi/libcrackme.so
                     if (entryName.startsWith("classes") && entryName.endsWith(".dex")) {
                         if (!dexFileReaders.containsKey(entryName)) { // only the first one
                             dexFileReaders.put(entryName, new DexFileReader(toByteArray(zipFile.getInputStream(e))));
@@ -49,6 +53,7 @@ public class MultiDexFileReader implements BaseDexFileReader {
             if (dexFileReaders.size() == 0) {
                 throw new IOException("Can not find classes.dex in zip file");
             } else if (dexFileReaders.size() == 1) {
+            	//System.err.println("zj size 1"+dexFileReaders.firstEntry().toString());//
                 return dexFileReaders.firstEntry().getValue();
             } else {
                 return new MultiDexFileReader(dexFileReaders.values());
@@ -61,9 +66,11 @@ public class MultiDexFileReader implements BaseDexFileReader {
         Set<String> classes = new HashSet<>();
         for (DexFileReader reader : readers) {
             List<String> classNames = reader.getClassNames();
+			//System.err.println("zj init 1" + classNames.size());
             for (int i = 0; i < classNames.size(); i++) {
                 String className = classNames.get(i);
                 if (classes.add(className)) {
+					//System.err.println("zj init " + className);
                     items.add(new Item(i, reader, className));
                 }
             }
@@ -93,6 +100,7 @@ public class MultiDexFileReader implements BaseDexFileReader {
     @Override
     public void accept(DexFileVisitor dv, int config) {
         int size = items.size();
+		//System.err.println("zj accept " + size);
         for (int i = 0; i < size; i++) {
             accept(dv, i, config);
         }
