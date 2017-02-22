@@ -31,16 +31,16 @@ if __name__=='__main__':
     #print cmd
     #os.system("{}".format(cmd))
     
-    # modefy dex
-    cmd = '{}\\d2j-modefy-class.bat {}\\{}.jartmp -f -o {}\\Programmer2.class -c Programmer'.format(dex2jar_dir, pkg_path, apk_name, pkg_path)
+    # jar to dex
+    #cmd = '{}\\d2j-modefy-class.bat {}\\{}.jar -f -o {}\\{}.dex'.format(dex2jar_dir, pkg_path, apk_name, pkg_path, apk_name)
     #print '########################'
-    print '#######',cmd
-    os.system("{}".format(cmd))
+    #print cmd
+    #os.system("{}".format(cmd))
     
     # class join jar
-    #cmd = '{}\\d2j-class-join-jar.bat {}\\Programmer.class -i {}\\{}.jar -f -p com.example '.format(dex2jar_dir, pkg_path, pkg_path, apk_name)
-    #print '#######',cmd
-    #os.system("{}".format(cmd))
+    cmd = '{}\\d2j-class-join-jar.bat {}\\Programmer.class -i {}\\{}.jar -f -p com.example '.format(dex2jar_dir, pkg_path, pkg_path, apk_name)
+    print '#######',cmd
+    os.system("{}".format(cmd))
     #raw_input('')
 '''
 %ADB_DIR%\adb shell am start -D -n dascom.telecom.vipclub/dascom.telecom.vipclub.InitActivity

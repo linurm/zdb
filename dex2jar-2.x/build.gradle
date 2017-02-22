@@ -83,6 +83,18 @@ subprojects {
             into 'F:\\fbyapk\\cmd\\dex-tools-2.1-SNAPSHOT\\bin\\'
         }
     }
+    task xxx{
+        println 'xxxxxxxxxxxxxx'
+    }
+
+    task sss{
+        println 'ssssssssssssss'
+    }
+    sss.mustRunAfter(build)
+    xxx.mustRunAfter(build)
+    copyjar.mustRunAfter(build)
+    copybat.mustRunAfter copyjar
+    copytools.mustRunAfter copybat
 }
 
 def getRevision() {
