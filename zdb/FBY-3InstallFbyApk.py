@@ -24,8 +24,7 @@ if __name__=='__main__':
     
     
     # install apk
-    print '########################'
-    print cmd
+    print '#######',cmd
     
     dev.install(cmd, True)
     #os.system("{}".format(cmd))

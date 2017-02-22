@@ -20,14 +20,12 @@ if __name__=='__main__':
     
 
     # apk(dex) to smali
-    print '########################'
-    print cmd
+    print '#######',cmd
     os.system("{}".format(cmd))
 
     # apk(dex) to jar
     cmd = '{}\\d2j-dex2jar.bat {}.apk -f -o {}\\{}.jar'.format(dex2jar_dir, pkg_path, pkg_path, apk_name)
-    print '########################'
-    print cmd
+    print '#######',cmd
     os.system("{}".format(cmd))
     
 
