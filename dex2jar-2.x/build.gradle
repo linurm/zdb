@@ -68,6 +68,7 @@ subprojects {
             exclude '*source*'
             into 'F:\\fbyapk\\cmd\\dex-tools-2.1-SNAPSHOT\\lib'
         }
+        println 'copy jar'
     }
 
     task copybat(type: Copy) {
@@ -75,6 +76,7 @@ subprojects {
             from 'build\\generated-sources\\bin\\'
             into 'F:\\fbyapk\\cmd\\dex-tools-2.1-SNAPSHOT\\'
         }
+        println 'copy bat'
     }
 
     task copytools(type: Copy) {
@@ -82,17 +84,10 @@ subprojects {
             from 'build\\scripts\\'
             into 'F:\\fbyapk\\cmd\\dex-tools-2.1-SNAPSHOT\\bin\\'
         }
-    }
-    task xxx{
-        println 'xxxxxxxxxxxxxx'
+        println 'copy tools'
     }
 
-    task sss{
-        println 'ssssssssssssss'
-    }
-    sss.mustRunAfter(build)
-    xxx.mustRunAfter(build)
-    copyjar.mustRunAfter(build)
+    copyjar.mustRunAfter(install)
     copybat.mustRunAfter copyjar
     copytools.mustRunAfter copybat
 }

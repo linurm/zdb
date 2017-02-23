@@ -103,13 +103,13 @@ public class ClassJoinJar extends BaseCmd {
 
     private boolean addClassFileToJar(String classFilePath, String jarName, String packagename) {
         try {
-//            int index = jarName.lastIndexOf(File.separator);
-//
-//
-//            String path = jarName.substring(0, index + 1);
+            int index = jarName.lastIndexOf(".");
+            String path = jarName.substring(0, index);
+            String spath = jarName.substring(index);
 //            System.err.println("path:" + path);
+//            System.err.println("spath:" + path + "-tmp" + spath);
             File oldZipFile = new File(jarName);
-            File newZipFile = new File(jarName + "tmp");
+            File newZipFile = new File(path + "-tmp" + spath);
             addFileToZipFile(classFilePath, oldZipFile.getAbsolutePath(), newZipFile.getAbsolutePath(), packagename);
             //oldZipFile.delete();
             //newZipFile.renameTo(oldZipFile);

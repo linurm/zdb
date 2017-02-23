@@ -17,6 +17,13 @@
 package com.googlecode.dex2jar.tools;
 
 
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.FieldVisitor;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystem;
@@ -25,6 +32,9 @@ import java.nio.file.Path;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
+import static org.objectweb.asm.Opcodes.GETSTATIC;
+import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 
 @BaseCmd.Syntax(cmd = "d2j-modefy-class", syntax = "[options] <dir>", desc = "Convert jar to dex by invoking dx.")
@@ -102,11 +112,50 @@ public class ClassModefy extends BaseCmd {
 
             ZipFile war = new ZipFile(oldZipFile.getAbsoluteFile());
             Enumeration<? extends ZipEntry> entries = war.entries();
+            String pkg_class = clz.replace(".", "/") + ".class";
             while (entries.hasMoreElements()) {
                 ZipEntry e = entries.nextElement();
-                if (e.toString().equals(clz)) {
+                if (e.toString().equals(pkg_class)) {
                     System.err.println("" + e.toString());
-                }System.err.println("" + e.toString());
+                    ClassReader cr = new ClassReader(war.getInputStream(e));
+                    ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_MAXS);
+                    ClassVisitor cv = new ClassVisitor(Opcodes.ASM4, cw) {
+                        @Override
+                        public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
+                            super.visit(version, access, name, signature, superName, interfaces);
+                            System.err.println("visit:" + access + " name: " + name + " : " + signature + " version: " + version);
+                        }
+
+                        @Override
+                        public MethodVisitor visitMethod(int access, String name, String desc, String signature,
+                                                         String[] exceptions) {
+                            System.err.println("visitMethod access:" + access + " name:" + name + " desc:" + desc + " signature:" + signature);
+
+                            //if(name.equals())
+                            MethodVisitor mv = super.visitMethod(access, name, desc, signature, exceptions);
+                            MethodVisitor newMethod = null;
+                            newMethod = new AsmMethodVisit(mv); //访问需要修改的方法
+                            return newMethod;
+                            //return mv;
+                        }
+
+                        @Override
+                        public FieldVisitor visitField(int access, String name, String desc, String signature, Object value) {
+                            System.err.println("visitField access:" + access + " name:" + name + " desc:" + desc + " signature:" + signature);
+                            return super.visitField(access, name, desc, signature, value);
+                        }
+
+                        @Override
+                        public void visitEnd() {
+                            super.visitEnd();
+
+                            System.err.println("visitEnd");
+                        }
+                    };
+                    cr.accept(cv,Opcodes.ASM4);
+                    //zos.write(cw.toByteArray());
+                }
+                //System.err.println("" + e.toString());
             }
 //            ClassReader classReader = new ClassReader(Files.readAllBytes(output));
 //            ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS);
@@ -131,5 +180,48 @@ public class ClassModefy extends BaseCmd {
             }
         }
 
+    }
+
+    static  class AsmMethodVisit extends MethodVisitor {
+
+        public AsmMethodVisit(MethodVisitor mv) {
+            super(Opcodes.ASM4, mv);
+        }
+
+        @Override
+        public void visitMethodInsn(int opcode, String owner, String name, String desc) {
+            super.visitMethodInsn(opcode, owner, name, desc);
+        }
+
+        @Override
+        public void visitCode() {
+            //此方法在访问方法的头部时被访问到，仅被访问一次
+            //此处可插入新的指令
+            //mv.
+            super.visitCode();
+        }
+
+        @Override
+        public void visitInsn(int opcode) {
+            //此方法可以获取方法中每一条指令的操作类型，被访问多次
+            //如应在方法结尾处添加新指令，则应判断：
+            if(opcode == 555)//Opcodes.RETURN)
+            {
+                // pushes the 'out' field (of type PrintStream) of the System class
+                mv.visitFieldInsn(GETSTATIC,
+                        "java/lang/System",
+                        "out",
+                        "Ljava/io/PrintStream;");
+                // pushes the "Hello World!" String constant
+                mv.visitLdcInsn("this is a modify method!");
+                // invokes the 'println' method (defined in the PrintStream class)
+                mv.visitMethodInsn(INVOKEVIRTUAL,
+                        "java/io/PrintStream",
+                        "println",
+                        "(Ljava/lang/String;)V");
+//                mv.visitInsn(RETURN);
+            }
+            super.visitInsn(opcode);
+        }
     }
 }

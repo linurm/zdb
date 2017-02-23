@@ -32,7 +32,7 @@ if __name__=='__main__':
     #os.system("{}".format(cmd))
     
     # modefy dex
-    cmd = '{}\\d2j-modefy-class.bat {}\\{}.jartmp -f -o {}\\Programmer2.class -c Programmer'.format(dex2jar_dir, pkg_path, apk_name, pkg_path)
+    cmd = '{}\\d2j-modefy-class.bat {}\\{}-tmp.jar -f -o {}\\Programmer2.class -c com.example.Programmer'.format(dex2jar_dir, pkg_path, apk_name, pkg_path)
     #print '########################'
     print '#######',cmd
     os.system("{}".format(cmd))
