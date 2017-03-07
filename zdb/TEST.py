@@ -17,7 +17,6 @@ if __name__=='__main__':
     smali_dir = "{}".format(addr['smali_dir'])
     pkg_path = "{}\\{}".format(pkg_dir, apk_name)    
     
-    
 
     # apk(dex) to smali
     #print '########################'
