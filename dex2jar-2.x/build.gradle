@@ -34,7 +34,6 @@ subprojects {
         main { compileClasspath += configurations.provided }
         test {
             compileClasspath += configurations.provided
-
             // make sure the resources and class output to same dir, for simple unit test
             output.resourcesDir = output.classesDir
         }
@@ -87,7 +86,8 @@ subprojects {
         println 'copy tools'
     }
 
-    copyjar.mustRunAfter(install)
+    copyjar.dependsOn 'jar'
+    copyjar.mustRunAfter 'jar'
     copybat.mustRunAfter copyjar
     copytools.mustRunAfter copybat
 }
