@@ -206,6 +206,7 @@ public class ClassModefy extends BaseCmd {
                     "java/io/PrintStream",
                     "println",
                     "(Ljava/lang/String;)V");
+
             super.visitCode();
         }
 

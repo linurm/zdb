@@ -59,15 +59,18 @@ subprojects {
             include 'LICENSE.txt'
             into('META-INF')
         }
+
+        println "+++${project.name}+jar+++++"
     }
 
     task copyjar(type: Copy) {
+        //dependsOn {}
         copy {
             from 'build\\libs\\'
             exclude '*source*'
             into 'F:\\fbyapk\\cmd\\dex-tools-2.1-SNAPSHOT\\lib'
         }
-        println 'copy jar'
+        println "${project.name} copy jar"
     }
 
     task copybat(type: Copy) {
@@ -75,7 +78,7 @@ subprojects {
             from 'build\\generated-sources\\bin\\'
             into 'F:\\fbyapk\\cmd\\dex-tools-2.1-SNAPSHOT\\'
         }
-        println 'copy bat'
+        println "${project.name} copy bat"
     }
 
     task copytools(type: Copy) {
@@ -83,13 +86,24 @@ subprojects {
             from 'build\\scripts\\'
             into 'F:\\fbyapk\\cmd\\dex-tools-2.1-SNAPSHOT\\bin\\'
         }
-        println 'copy tools'
+        println "${project.name} copy tools"
     }
-
-    copyjar.dependsOn 'jar'
-    copyjar.mustRunAfter 'jar'
+    //project.getTasksByName("")
+    //task_i = ":${project.name}:${project.getTasksByName('build',true).iterator().next().getName()}"
+    //project.getTasksByName('build',true).finalizedBy copyjar
+    //.finalizedBy(copyjar)
+    //copyjar {}.mustRunAfter "${task_i}"
+    copyjar.dependsOn ":${project.name}:${project.getTasksByName('build', true).iterator().next().getName()}"
     copybat.mustRunAfter copyjar
     copytools.mustRunAfter copybat
+
+
+    task display_name() {
+        println "-----------------------------"
+        println "${project.getTasks()}"
+        //println task_i
+        //println project.getTasksByName('assemble${variant.name.capitalize()}',true)
+    }
 }
 
 def getRevision() {
