@@ -100,9 +100,9 @@ subprojects {
 
     task display_name() {
         println "-----------------------------"
-        println "${project.getTasks()}"
+        //println "${project.getTasks()}"
         //println task_i
-        //println project.getTasksByName('assemble${variant.name.capitalize()}',true)
+        println project.getTasksByName('assemble${variant.name.capitalize()}',true)
     }
 }
 

@@ -17,6 +17,8 @@
 package com.googlecode.dex2jar.tools;
 
 
+import com.googlecode.dex2jar.tools.ZjUtils.Utils;
+
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
@@ -33,6 +35,7 @@ import java.nio.file.Path;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
 
 import static org.objectweb.asm.Opcodes.GETSTATIC;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
@@ -120,67 +123,25 @@ public class ClassModefy extends BaseCmd {
                     System.err.println("" + e.toString());
                     ClassReader cr = new ClassReader(war.getInputStream(e));
                     ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_MAXS);
-                    ClassVisitor cv = new ClassVisitor(Opcodes.ASM4, cw) {
-                        @Override
-                        public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
-                            super.visit(version, access, name, signature, superName, interfaces);
-                            //System.err.println("visit:" + access + " name: " + name + " : " + signature + " version: " + version);
-                            //visit:33 name: com/example/Programmer : null version: 51
-                        }
-
-                        @Override
-                        public MethodVisitor visitMethod(int access, String name, String desc, String signature,
-                                                         String[] exceptions) {
-                            System.err.println("visitMethod access:" + access + " name:" + name + " desc:" + desc + " signature:" + signature);
-                            //visitMethod access:1 name:<init> desc:()V signature:null
-                            //visitMethod access:2 name:code desc:(Ljava/lang/String;)Ljava/lang/String; signature:null
-                            //visitMethod access:1 name:code desc:()V signature:null
-                            //if(name.equals())
-                            MethodVisitor mv = super.visitMethod(access, name, desc, signature, exceptions);
-                            if(name.equals("<init>"))
-                                return mv;
-
-                            MethodVisitor newMethod = null;
-                            newMethod = new AsmMethodVisit(mv); //访问需要修改的方法
-                            return newMethod;
-                            //return mv;
-                        }
-
-                        @Override
-                        public FieldVisitor visitField(int access, String name, String desc, String signature, Object value) {
-                            //visitField access:1 name:aBoolean desc:Z signature:null
-                            //System.err.println("visitField access:" + access + " name:" + name + " desc:" + desc + " signature:" + signature);
-                            return super.visitField(access, name, desc, signature, value);
-                        }
-
-                        @Override
-                        public void visitEnd() {
-                            super.visitEnd();
-
-                            //System.err.println("visitEnd");
-                        }
-                    };
-                    cr.accept(cv, Opcodes.ASM4);
+                    ClassVisitor ca = new GeneralClassAdapter(cw, "ss", "I");
+                    cr.accept(ca, Opcodes.ASM4);
                     byte[] code = cw.toByteArray();
                     FileOutputStream fos = new FileOutputStream(output.toString());
                     fos.write(code);
                     fos.close();
+
                     //zos.write(cw.toByteArray());
                 }
                 //System.err.println("" + e.toString());
             }
-
-            ///////////////////////////////////////////////////////////////////////////////
-
         } finally {
             if (tmp != null) {
                 Files.deleteIfExists(tmp);
             }
         }
-
     }
 
-    static class AsmMethodVisit extends MethodVisitor {
+    class AsmMethodVisit extends MethodVisitor {
 
         public AsmMethodVisit(MethodVisitor mv) {
             super(Opcodes.ASM4, mv);
@@ -189,39 +150,98 @@ public class ClassModefy extends BaseCmd {
         @Override
         public void visitMethodInsn(int opcode, String owner, String name, String desc) {
             super.visitMethodInsn(opcode, owner, name, desc);
+            System.err.println("visitMethodInsn " + opcode + " name: " + name + " desc: " + desc);
         }
 
         @Override
         public void visitCode() {
             //此方法在访问方法的头部时被访问到，仅被访问一次
             //此处可插入新的指令
-            mv.visitFieldInsn(GETSTATIC,
-                    "java/lang/System",
-                    "out",
-                    "Ljava/io/PrintStream;");
-            // pushes the "Hello World!" String constant
-            mv.visitLdcInsn("this is a modify method!");
-            // invokes the 'println' method (defined in the PrintStream class)
-            mv.visitMethodInsn(INVOKEVIRTUAL,
-                    "java/io/PrintStream",
-                    "println",
-                    "(Ljava/lang/String;)V");
-
             super.visitCode();
+//            mv.visitFieldInsn(GETSTATIC,
+//                    "java/lang/System",
+//                    "out",
+//                    "Ljava/io/PrintStream;");
+//            // pushes the "Hello World!" String constant
+//            mv.visitLdcInsn("this is a modify method!");
+//            // invokes the 'println' method (defined in the PrintStream class)
+//            mv.visitMethodInsn(INVOKEVIRTUAL,
+//                    "java/io/PrintStream",
+//                    "println",
+//                    "(Ljava/lang/String;)V");
+            Utils.everyMethodAddCode(mv);
         }
 
         @Override
         public void visitInsn(int opcode) {
             //此方法可以获取方法中每一条指令的操作类型，被访问多次
             //如应在方法结尾处添加新指令，则应判断：
-            System.err.println("" + opcode);
+            System.err.println("visitInsn " + opcode);
 
-            if (opcode == Opcodes.RETURN) {
+            if ((opcode <= Opcodes.RETURN && opcode >= Opcodes.IRETURN) || opcode == Opcodes.ATHROW) {
                 // pushes the 'out' field (of type PrintStream) of the System class
-
+                mv.visitFieldInsn(GETSTATIC,
+                        "java/lang/System",
+                        "out",
+                        "Ljava/io/PrintStream;");
+                // pushes the "Hello World!" String constant
+                mv.visitLdcInsn("this is a modify method 2!");
+                // invokes the 'println' method (defined in the PrintStream class)
+                mv.visitMethodInsn(INVOKEVIRTUAL,
+                        "java/io/PrintStream",
+                        "println",
+                        "(Ljava/lang/String;)V");
 //                mv.visitInsn(RETURN);
+                ;//
             }
             super.visitInsn(opcode);
+        }
+    }
+
+    class GeneralClassAdapter extends ClassVisitor {
+
+        public GeneralClassAdapter(ClassVisitor cv, String name, String desc) {
+            super(Opcodes.ASM4, cv);
+            cv.visitField(Opcodes.GETSTATIC | Opcodes.ACC_PUBLIC, name, desc, null, null);
+        }
+
+        @Override
+        public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
+            super.visit(version, access, name, signature, superName, interfaces);
+            //System.err.println("visit:" + access + " name: " + name + " : " + signature + " version: " + version);
+            //visit:33 name: com/example/Programmer : null version: 51
+        }
+
+        @Override
+        public MethodVisitor visitMethod(int access, String name, String desc, String signature,
+                                         String[] exceptions) {
+            System.err.println("visitMethod access:" + access + " name:" + name + " desc:" + desc + " signature:" + signature);
+            //visitMethod access:1 name:<init> desc:()V signature:null
+            //visitMethod access:2 name:code desc:(Ljava/lang/String;)Ljava/lang/String; signature:null
+            //visitMethod access:1 name:code desc:()V signature:null
+            //if(name.equals())
+            MethodVisitor mv = super.visitMethod(access, name, desc, signature, exceptions);
+            if (name.equals("<init>") || name.equals("<clinit>"))
+                return mv;
+
+            MethodVisitor newMethod = null;
+            newMethod = new AsmMethodVisit(mv); //访问需要修改的方法
+            return newMethod;
+            //return mv;
+        }
+
+        @Override
+        public FieldVisitor visitField(int access, String name, String desc, String signature, Object value) {
+            //visitField access:1 name:aBoolean desc:Z signature:null
+            //System.err.println("visitField access:" + access + " name:" + name + " desc:" + desc + " signature:" + signature);
+            return super.visitField(access, name, desc, signature, value);
+        }
+
+        @Override
+        public void visitEnd() {
+            super.visitEnd();
+
+            //System.err.println("visitEnd");
         }
     }
 
