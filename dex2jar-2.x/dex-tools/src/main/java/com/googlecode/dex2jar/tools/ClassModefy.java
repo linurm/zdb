@@ -124,7 +124,7 @@ public class ClassModefy extends BaseCmd {
                     ClassReader cr = new ClassReader(war.getInputStream(e));
                     ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_MAXS);
                     ClassVisitor ca = new GeneralClassAdapter(cw, "ss", "I");
-                    cr.accept(ca, Opcodes.ASM4);
+                    cr.accept(ca, Opcodes.ASM5);
                     byte[] code = cw.toByteArray();
                     FileOutputStream fos = new FileOutputStream(output.toString());
                     fos.write(code);
@@ -144,7 +144,7 @@ public class ClassModefy extends BaseCmd {
     class AsmMethodVisit extends MethodVisitor {
 
         public AsmMethodVisit(MethodVisitor mv) {
-            super(Opcodes.ASM4, mv);
+            super(Opcodes.ASM5, mv);
         }
 
         @Override
@@ -169,7 +169,7 @@ public class ClassModefy extends BaseCmd {
 //                    "java/io/PrintStream",
 //                    "println",
 //                    "(Ljava/lang/String;)V");
-            Utils.everyMethodAddCode(mv);
+            Utils.theMethodAddCode(mv);
         }
 
         @Override
@@ -201,8 +201,9 @@ public class ClassModefy extends BaseCmd {
     class GeneralClassAdapter extends ClassVisitor {
 
         public GeneralClassAdapter(ClassVisitor cv, String name, String desc) {
-            super(Opcodes.ASM4, cv);
-            cv.visitField(Opcodes.GETSTATIC | Opcodes.ACC_PUBLIC, name, desc, null, null);
+            super(Opcodes.ASM5, cv);
+            Utils.classAddMethod(cv);
+            //cv.visitField(Opcodes.GETSTATIC | Opcodes.ACC_PUBLIC, name, desc, null, null);
         }
 
         @Override

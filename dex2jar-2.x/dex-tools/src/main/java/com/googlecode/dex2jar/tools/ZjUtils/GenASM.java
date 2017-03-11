@@ -6,7 +6,7 @@ package com.googlecode.dex2jar.tools.ZjUtils;
 
 public class GenASM {
     //print current class name
-    public void fun1() {
+    static public void fun1() {
         String clazzName3 = new Object() {
             public String getClassName() {
                 String clazzName = this.getClass().getName();
