@@ -18,12 +18,12 @@ if __name__=='__main__':
     pkg_path = "{}\\{}".format(pkg_dir, apk_name)    
  
     # jar to dex
-    cmd = '{}\\d2j-jar2dex.bat {}\\{}.jar -o {}\\{}.dex'.format(dex2jar_dir, pkg_path, apk_name, pkg_path, apk_name)
+    cmd = '{}\\d2j-jar2dex.bat {}\\{}.jar -f -o {}\\{}.dex'.format(dex2jar_dir, pkg_path, apk_name, pkg_path, apk_name)
     print '#######',cmd
     os.system("{}".format(cmd))
     
     # dex to smali
-    cmd = 'java -jar {}\\baksmali-2.1.3.jar {}\\{}.dex -o {}\\smali'.format(smali_dir,pkg_path, apk_name, pkg_path)
+    cmd = 'java -jar {}\\baksmali-2.1.3.jar {}\\{}.dex -f -o {}\\smali'.format(smali_dir,pkg_path, apk_name, pkg_path)
     print '#######',cmd
     os.system("{}".format(cmd))
     #raw_input('')

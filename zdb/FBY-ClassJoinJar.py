@@ -38,7 +38,7 @@ if __name__=='__main__':
     #os.system("{}".format(cmd))
     
     # class join jar
-    cmd = '{}\\d2j-class-join-jar.bat {}\\Programmer.class -i {}\\{}.jar -f -p com.example '.format(dex2jar_dir, pkg_path, pkg_path, apk_name)
+    cmd = '{}\\d2j-class-join-jar.bat {}\\Utils.class -i {}\\{}.jar -f -p com.googlecode.dex2jar.tools.ZjUtils '.format(dex2jar_dir, pkg_path, pkg_path, apk_name)
     print '#######',cmd
     os.system("{}".format(cmd))
     #raw_input('')

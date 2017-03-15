@@ -49,12 +49,13 @@ public class ClassJoinJar extends BaseCmd {
         new ClassJoinJar().doMain(args);
     }
 
-    private boolean addFileToZipFile(String fileName, String zipFileName, String newZipFile, String packagename) {
+    private boolean addFileToZipFile(String fileName, String jarFileName, String newJarFileName, String mPackageName) {
         try {
 
-//            System.err.println(fileName);
-//            System.err.println(zipFileName);
-//            System.err.println(newZipFile);
+            System.err.println(fileName);
+            System.err.println(jarFileName);
+            System.err.println(newJarFileName);
+            System.err.println(mPackageName);
             FileInputStream fis = new FileInputStream(fileName);
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             int len = 0;
@@ -62,14 +63,14 @@ public class ClassJoinJar extends BaseCmd {
             while ((len = fis.read(buffer)) > 0) {
                 bos.write(buffer, 0, len);
             }
-            ZipFile war = new ZipFile(zipFileName);
-            ZipOutputStream append = new ZipOutputStream(new FileOutputStream(newZipFile));
+            ZipFile war = new ZipFile(jarFileName);
+            ZipOutputStream append = new ZipOutputStream(new FileOutputStream(newJarFileName));
             Enumeration<? extends ZipEntry> entries = war.entries();
             int count;
             byte[] data = new byte[1024];
             while (entries.hasMoreElements()) {
                 ZipEntry e = entries.nextElement();
-                //System.err.println("" + e.toString());
+                System.err.println("Entry: " + e.toString());
                 InputStream in = war.getInputStream(e);
                 append.putNextEntry(e);
                 if (!e.isDirectory()) {
@@ -82,7 +83,7 @@ public class ClassJoinJar extends BaseCmd {
             }
             int index = fileName.lastIndexOf(File.separator);
             String s = fileName.substring(index + 1);
-            s = packagename.replace('.', '/') + '/' + s;
+            s = mPackageName.replace('.', '/') + '/' + s;
             System.err.println("s:" + s);
 
             ZipEntry e = new ZipEntry(s);
@@ -100,14 +101,14 @@ public class ClassJoinJar extends BaseCmd {
             return false;
         }
     }
-
+//// ..\tmp\no1\Programmer.class         ..\tmp\no1\no1.jar
     private boolean addClassFileToJar(String classFilePath, String jarName, String packagename) {
         try {
             int index = jarName.lastIndexOf(".");
             String path = jarName.substring(0, index);
             String spath = jarName.substring(index);
-//            System.err.println("path:" + path);
-//            System.err.println("spath:" + path + "-tmp" + spath);
+            System.err.println("path:" + path);
+            System.err.println("spath:" + path + "-tmp" + spath);
             File oldZipFile = new File(jarName);
             File newZipFile = new File(path + "-tmp" + spath);
             addFileToZipFile(classFilePath, oldZipFile.getAbsolutePath(), newZipFile.getAbsolutePath(), packagename);

@@ -17,7 +17,7 @@
 package com.googlecode.dex2jar.tools;
 
 
-import com.googlecode.dex2jar.tools.ZjUtils.Utils;
+import com.googlecode.dex2jar.tools.ZjUtils.GenMethodAndFunc;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
@@ -37,10 +37,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 
-import static org.objectweb.asm.Opcodes.GETSTATIC;
-import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
-
-
 @BaseCmd.Syntax(cmd = "d2j-modefy-class", syntax = "[options] <dir>", desc = "Convert jar to dex by invoking dx.")
 public class ClassModefy extends BaseCmd {
     @Opt(opt = "f", longOpt = "force", hasArg = false, description = "force overwrite")
@@ -49,6 +45,8 @@ public class ClassModefy extends BaseCmd {
     private Path output;
     @Opt(opt = "c", longOpt = "class", description = "class name, default is $current_dir/[jar-name]-jar2dex.dex", argName = "class-file")
     private String clz;
+    @Opt(opt = "d", longOpt = "debug", hasArg = false, description = "debug", argName = "debug")
+    private boolean debug = false;
 
     public static void main(String... args) {
         new ClassModefy().doMain(args);
@@ -105,18 +103,19 @@ public class ClassModefy extends BaseCmd {
                 realJar = jar;
             }
 
-            System.out.println("class modefy " + realJar + " -> " + output);
+
             String jars = realJar.toString();
             int index = jars.lastIndexOf(File.separator);
 
 
             String path = jars.substring(0, index + 1);
-            System.err.println("path:" + path);
+            //System.err.println("path:" + path);
             File oldZipFile = new File(jars);
 
             ZipFile war = new ZipFile(oldZipFile.getAbsoluteFile());
             Enumeration<? extends ZipEntry> entries = war.entries();
             String pkg_class = clz.replace(".", "/") + ".class";
+            System.out.println("class modefy " + pkg_class + "@" + realJar + " -> " + output);
             while (entries.hasMoreElements()) {
                 ZipEntry e = entries.nextElement();
                 if (e.toString().equals(pkg_class)) {
@@ -124,7 +123,7 @@ public class ClassModefy extends BaseCmd {
                     ClassReader cr = new ClassReader(war.getInputStream(e));
                     ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_MAXS);
                     ClassVisitor ca = new GeneralClassAdapter(cw, "ss", "I");
-                    cr.accept(ca, Opcodes.ASM5);
+                    cr.accept(ca, Opcodes.ASM4);
                     byte[] code = cw.toByteArray();
                     FileOutputStream fos = new FileOutputStream(output.toString());
                     fos.write(code);
@@ -144,13 +143,14 @@ public class ClassModefy extends BaseCmd {
     class AsmMethodVisit extends MethodVisitor {
 
         public AsmMethodVisit(MethodVisitor mv) {
-            super(Opcodes.ASM5, mv);
+            super(Opcodes.ASM4, mv);
         }
 
         @Override
         public void visitMethodInsn(int opcode, String owner, String name, String desc) {
             super.visitMethodInsn(opcode, owner, name, desc);
-            System.err.println("visitMethodInsn " + opcode + " name: " + name + " desc: " + desc);
+            if (debug)
+                System.err.println("visitMethodInsn " + opcode + " name: " + name + " desc: " + desc);
         }
 
         @Override
@@ -169,30 +169,18 @@ public class ClassModefy extends BaseCmd {
 //                    "java/io/PrintStream",
 //                    "println",
 //                    "(Ljava/lang/String;)V");
-            Utils.theMethodAddCode(mv);
+            GenMethodAndFunc.theMethodAddCode(mv);
         }
 
         @Override
         public void visitInsn(int opcode) {
             //此方法可以获取方法中每一条指令的操作类型，被访问多次
             //如应在方法结尾处添加新指令，则应判断：
-            System.err.println("visitInsn " + opcode);
+            if (debug)
+                System.err.println("visitInsn " + opcode);
 
             if ((opcode <= Opcodes.RETURN && opcode >= Opcodes.IRETURN) || opcode == Opcodes.ATHROW) {
-                // pushes the 'out' field (of type PrintStream) of the System class
-                mv.visitFieldInsn(GETSTATIC,
-                        "java/lang/System",
-                        "out",
-                        "Ljava/io/PrintStream;");
-                // pushes the "Hello World!" String constant
-                mv.visitLdcInsn("this is a modify method 2!");
-                // invokes the 'println' method (defined in the PrintStream class)
-                mv.visitMethodInsn(INVOKEVIRTUAL,
-                        "java/io/PrintStream",
-                        "println",
-                        "(Ljava/lang/String;)V");
-//                mv.visitInsn(RETURN);
-                ;//
+                ;
             }
             super.visitInsn(opcode);
         }
@@ -201,22 +189,24 @@ public class ClassModefy extends BaseCmd {
     class GeneralClassAdapter extends ClassVisitor {
 
         public GeneralClassAdapter(ClassVisitor cv, String name, String desc) {
-            super(Opcodes.ASM5, cv);
-            Utils.classAddMethod(cv);
+            super(Opcodes.ASM4, cv);
+            GenMethodAndFunc.classAddMethod(cv);
             //cv.visitField(Opcodes.GETSTATIC | Opcodes.ACC_PUBLIC, name, desc, null, null);
         }
 
         @Override
         public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
             super.visit(version, access, name, signature, superName, interfaces);
-            //System.err.println("visit:" + access + " name: " + name + " : " + signature + " version: " + version);
+            if (debug)
+                System.err.println("visit:" + access + " name: " + name + " : " + signature + " version: " + version);
             //visit:33 name: com/example/Programmer : null version: 51
         }
 
         @Override
         public MethodVisitor visitMethod(int access, String name, String desc, String signature,
                                          String[] exceptions) {
-            System.err.println("visitMethod access:" + access + " name:" + name + " desc:" + desc + " signature:" + signature);
+            if (debug)
+                System.err.println("visitMethod access:" + access + " name:" + name + " desc:" + desc + " signature:" + signature);
             //visitMethod access:1 name:<init> desc:()V signature:null
             //visitMethod access:2 name:code desc:(Ljava/lang/String;)Ljava/lang/String; signature:null
             //visitMethod access:1 name:code desc:()V signature:null
