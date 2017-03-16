@@ -30,17 +30,29 @@ if __name__=='__main__':
     #print cmd
     #os.system("{}".format(cmd))
     
-    # modefy dex
-    cmd = '{}\\d2j-modefy-class.bat {}\\{}-tmp.jar -f -d -o {}\\MainActivity.class -c com.android.tools.sdkcontroller.activities.MainActivity'.format(dex2jar_dir, pkg_path, apk_name, pkg_path)
+    # modefy class
+    cmd = '{}\\d2j-modefy-class.bat {}\\{}.jar -f -o {}\\MainActivity.class -c com.android.tools.sdkcontroller.activities.MainActivity'.format(dex2jar_dir, pkg_path, apk_name, pkg_path)
     #print '########################'
     print '#######',cmd
-    os.system("{}".format(cmd))
+    #os.system("{}".format(cmd))
+    
+    '''import os
+    path='{}'.format(pkg_path)
+    print path
+    for dirpath, dirnames, filenames in os.walk(path):
+        if dirpath == path:
+            for file in filenames:
+                fullpath = os.path.join(dirpath,file)
+                hz = os.path.splitext(fullpath)[1]
+                if hz == '.class':
+                    print fullpath'''
+
     
     # class join jar
     #cmd = '{}\\d2j-class-join-jar.bat {}\\Programmer.class -i {}\\{}.jar -f -p com.example '.format(dex2jar_dir, pkg_path, pkg_path, apk_name)
     #print '#######',cmd
     #os.system("{}".format(cmd))
-    #raw_input('')
+    raw_input('Pause')
 '''
 %ADB_DIR%\adb shell am start -D -n dascom.telecom.vipclub/dascom.telecom.vipclub.InitActivity
 rem %ADB_DIR%\adb shell am start -D -n zj.zfenlly.tools/zj.zfenlly.main.MainActivity

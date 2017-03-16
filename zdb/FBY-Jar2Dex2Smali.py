@@ -18,7 +18,7 @@ if __name__=='__main__':
     pkg_path = "{}\\{}".format(pkg_dir, apk_name)    
  
     # jar to dex
-    cmd = '{}\\d2j-jar2dex.bat {}\\{}.jar -f -o {}\\{}.dex'.format(dex2jar_dir, pkg_path, apk_name, pkg_path, apk_name)
+    cmd = '{}\\d2j-jar2dex.bat {}\\{}-tmp.jar -f -o {}\\{}.dex'.format(dex2jar_dir, pkg_path, apk_name, pkg_path, apk_name)
     print '#######',cmd
     os.system("{}".format(cmd))
     

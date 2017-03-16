@@ -8,9 +8,9 @@ public class Utils {
         StackTraceElement[] stackElements = ex.getStackTrace();
         if (stackElements != null) {
             for (int i = 0; i < stackElements.length; i++) {
-                System.out.print(stackElements[i].getClassName()+"/t");
-                System.out.print(stackElements[i].getFileName()+"/t");
-                System.out.print(stackElements[i].getLineNumber()+"/t");
+                System.out.print(stackElements[i].getClassName()+"@");
+                System.out.print(stackElements[i].getFileName()+":");
+                System.out.print(stackElements[i].getLineNumber()+":");
                 System.out.println(stackElements[i].getMethodName());
                 System.out.println("-----------------------------------");
             }

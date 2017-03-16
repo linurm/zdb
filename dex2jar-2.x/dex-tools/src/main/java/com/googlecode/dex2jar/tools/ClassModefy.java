@@ -114,12 +114,13 @@ public class ClassModefy extends BaseCmd {
 
             ZipFile war = new ZipFile(oldZipFile.getAbsoluteFile());
             Enumeration<? extends ZipEntry> entries = war.entries();
-            String pkg_class = clz.replace(".", "/") + ".class";
+            String pkg_class = clz;
             System.out.println("class modefy " + pkg_class + "@" + realJar + " -> " + output);
             while (entries.hasMoreElements()) {
                 ZipEntry e = entries.nextElement();
                 if (e.toString().equals(pkg_class)) {
-                    System.err.println("" + e.toString());
+                    if (debug)
+                        System.err.println("" + e.toString());
                     ClassReader cr = new ClassReader(war.getInputStream(e));
                     ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_MAXS);
                     ClassVisitor ca = new GeneralClassAdapter(cw, "ss", "I");

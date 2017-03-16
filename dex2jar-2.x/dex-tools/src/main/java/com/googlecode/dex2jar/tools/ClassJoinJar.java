@@ -39,9 +39,12 @@ import java.util.zip.ZipOutputStream;
 public class ClassJoinJar extends BaseCmd {
     @Opt(opt = "f", longOpt = "force", hasArg = false, description = "force overwrite")
     private boolean forceOverwrite = false;
-    @Opt(opt = "i", longOpt = "into", description = "into .jar file", argName = "the-jar-file")
+    @Opt(opt = "i", longOpt = "into", description = "input .jar file", argName = "the-jar-file")
     private Path into;
-
+    @Opt(opt = "o", longOpt = "output", description = "output .jar file", argName = "the-jar-file")
+    private Path output;
+    @Opt(opt = "d", longOpt = "debug", hasArg = false, description = "debug", argName = "debug")
+    private boolean debug = false;
     @Opt(opt = "p", longOpt = "packagename", description = "package name", argName = "package-name")
     private String packagename;
 
@@ -70,7 +73,8 @@ public class ClassJoinJar extends BaseCmd {
             byte[] data = new byte[1024];
             while (entries.hasMoreElements()) {
                 ZipEntry e = entries.nextElement();
-                System.err.println("Entry: " + e.toString());
+                if (debug)
+                    System.err.println("Entry: " + e.toString());
                 InputStream in = war.getInputStream(e);
                 append.putNextEntry(e);
                 if (!e.isDirectory()) {
@@ -84,7 +88,8 @@ public class ClassJoinJar extends BaseCmd {
             int index = fileName.lastIndexOf(File.separator);
             String s = fileName.substring(index + 1);
             s = mPackageName.replace('.', '/') + '/' + s;
-            System.err.println("s:" + s);
+            if (debug)
+                System.err.println("s:" + s);
 
             ZipEntry e = new ZipEntry(s);
 
@@ -101,16 +106,17 @@ public class ClassJoinJar extends BaseCmd {
             return false;
         }
     }
-//// ..\tmp\no1\Programmer.class         ..\tmp\no1\no1.jar
-    private boolean addClassFileToJar(String classFilePath, String jarName, String packagename) {
+
+    //// ..\tmp\no1\Programmer.class         ..\tmp\no1\no1.jar
+    private boolean addClassFileToJar(String classFilePath, String jarName, String newJarName, String packagename) {
         try {
-            int index = jarName.lastIndexOf(".");
-            String path = jarName.substring(0, index);
-            String spath = jarName.substring(index);
-            System.err.println("path:" + path);
-            System.err.println("spath:" + path + "-tmp" + spath);
+//            int index = jarName.lastIndexOf(".");
+//            String path = jarName.substring(0, index);
+//            String spath = jarName.substring(index);
+//            System.err.println("path:" + path);
+//            System.err.println("spath:" + path + "-tmp" + spath);
             File oldZipFile = new File(jarName);
-            File newZipFile = new File(path + "-tmp" + spath);
+            File newZipFile = new File(newJarName);
             addFileToZipFile(classFilePath, oldZipFile.getAbsolutePath(), newZipFile.getAbsolutePath(), packagename);
             //oldZipFile.delete();
             //newZipFile.renameTo(oldZipFile);
@@ -128,7 +134,7 @@ public class ClassJoinJar extends BaseCmd {
         }
 
         Path cls = new File(remainingArgs[0]).toPath();
-        //System.err.println("zj " + cls.toString());//..\tmp\no1\Programmer.class
+        System.err.println("zj " + cls.toString());//..\tmp\no1\Programmer.class
         if (!Files.exists(cls)) {
             System.err.println(cls + " is not exists");
             usage();
@@ -141,9 +147,17 @@ public class ClassJoinJar extends BaseCmd {
 
         if (into == null) {
             if (Files.isDirectory(cls)) {
-                into = new File(cls.getFileName() + "-jar2dex.dex").toPath();
+                into = new File(cls.getFileName() + "-into.jar").toPath();
             } else {
-                into = new File(getBaseName(cls.getFileName().toString()) + "-jar2dex.dex").toPath();
+                into = new File(cls.toString() + "-into.jar").toPath();
+            }
+        }
+
+        if (output == null) {
+            if (Files.isDirectory(cls)) {
+                output = new File(cls.getFileName() + "-out.jar").toPath();
+            } else {
+                output = new File(cls.toString() + "-out.jar").toPath();
             }
         }
 
@@ -175,9 +189,10 @@ public class ClassJoinJar extends BaseCmd {
                 realJar = cls;
             }
 
-            System.out.println("class join jar " + realJar + " -> " + into);
+            System.out.println("class join jar " + realJar + " and " + into + "->" + output);
+            System.out.println("packagename:" + packagename);
             //jar2dex ..\tmp\no1\Programmer.class -> ..\tmp\no1\no1.jar
-            addClassFileToJar(realJar.toString(), into.toString(), packagename);
+            addClassFileToJar(realJar.toString(), into.toString(), output.toString(), packagename);
 
         } finally {
             if (tmp != null) {
