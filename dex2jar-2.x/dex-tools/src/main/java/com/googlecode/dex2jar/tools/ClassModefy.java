@@ -129,7 +129,6 @@ public class ClassModefy extends BaseCmd {
                     FileOutputStream fos = new FileOutputStream(output.toString());
                     fos.write(code);
                     fos.close();
-
                     //zos.write(cw.toByteArray());
                 }
                 //System.err.println("" + e.toString());
@@ -146,7 +145,6 @@ public class ClassModefy extends BaseCmd {
         public AsmMethodVisit(MethodVisitor mv) {
             super(Opcodes.ASM4, mv);
         }
-
         @Override
         public void visitMethodInsn(int opcode, String owner, String name, String desc) {
             super.visitMethodInsn(opcode, owner, name, desc);
@@ -191,7 +189,7 @@ public class ClassModefy extends BaseCmd {
 
         public GeneralClassAdapter(ClassVisitor cv, String name, String desc) {
             super(Opcodes.ASM4, cv);
-            GenMethodAndFunc.classAddMethod(cv);
+            //GenMethodAndFunc.classAddMethod(cv);
             //cv.visitField(Opcodes.GETSTATIC | Opcodes.ACC_PUBLIC, name, desc, null, null);
         }
 

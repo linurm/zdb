@@ -117,12 +117,13 @@ public class ListAllClass extends BaseCmd {
             Enumeration<? extends ZipEntry> entries = war.entries();
 //            String pkg_class = clz.replace(".", "/") + ".class";
             System.out.println("class list " + realJar + " -> " + output);
+            String entryStr = null;
             while (entries.hasMoreElements()) {
                 ZipEntry e = entries.nextElement();
 //                if (e.toString().equals(pkg_class)) {
-
-                if (e.toString().endsWith(".class")) {
-                    if(e.toString().contains("R.")||e.toString().contains("R$")){
+                entryStr = e.toString();
+                if (entryStr.endsWith(".class")) {
+                    if (entryStr.contains("R.") || entryStr.contains("$") || entryStr.startsWith("android/support") || entryStr.startsWith("org/apache")) {
                         continue;
                     }
                     System.err.println("" + e.toString());

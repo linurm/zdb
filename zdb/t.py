@@ -3,10 +3,7 @@ import sys
 
 
   
-for arg in sys.argv:  
-    print arg  
-  
-raw_input() 
+
 
 
 list_class = '{}\\classlist.txt'.format(pkg_path)

@@ -59,12 +59,14 @@ public class ClassUpdateToJar extends BaseCmd {
         new ClassUpdateToJar().doMain(args);
     }
 
-    private boolean addFileToZipFile(String classFileName, String jarFileName, String newJarFileName) {
+    private boolean addFileToZipFile(String jarFileName, String newJarFileName) {
         try {
 
-            System.err.println(classFileName);
-            System.err.println(jarFileName);
-            System.err.println(newJarFileName);
+            //System.err.println(classFileName);
+            if (debug) {
+                System.err.println(jarFileName);
+                System.err.println(newJarFileName);
+            }
 //            System.err.println(mPackageName);
             //FileInputStream fis = new FileInputStream(classFileName);
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -76,36 +78,85 @@ public class ClassUpdateToJar extends BaseCmd {
             ZipFile war = new ZipFile(jarFileName);
             ZipOutputStream append = new ZipOutputStream(new FileOutputStream(newJarFileName));
             Enumeration<? extends ZipEntry> entries = war.entries();
+            FileInputStream fis;
             int count;
+            int index;
+            int len;
             byte[] data = new byte[1024];
             while (entries.hasMoreElements()) {
                 ZipEntry e = entries.nextElement();
                 if (debug)
                     System.err.println("Entry: " + e.toString());
                 InputStream in = war.getInputStream(e);
-                append.putNextEntry(e);
+
                 if (!e.isDirectory()) {
                     if (isModefy(e) == 1) {
-                        String s = e.toString();
-                        int index = s.lastIndexOf("/");
-                        String classname = s.substring(index);
-                        String class_path = new File(classpath.toString() + classname).getAbsolutePath();
-                        FileInputStream fis = new FileInputStream(class_path);
-                        int len = 0;
-                        byte[] buffer = new byte[1024];
-                        while ((len = fis.read(buffer)) > 0) {
-                            bos.write(buffer, 0, len);
-                            append.write(bos.toByteArray());
-                        }
-                        System.err.println(class_path);
+//                        String s = e.toString();
+//                        index = s.lastIndexOf("/");
+//                        String classname = classpath.toString() + File.separator + s.substring(index + 1);
+//                        //xx/xx/xx.class
+//                        System.err.println("classname: " + classname);
+//                        System.err.println("Update: " + s);
+//                        String class_path = new File(classname).getAbsolutePath();
+//                        System.err.println("class_path: " + class_path);
+//                        fis = new FileInputStream(classname);
+//
+//                        ZipEntry e1 = new ZipEntry(s);
+//                        append.putNextEntry(e1);//
+//                        while ((len = fis.read(data)) > 0) {
+//                            bos.write(data, 0, len);
+//
+//                        }
+//                        append.write(bos.toByteArray());
+//                        append.closeEntry();
+//                        fis.close();
+//                        if (debug)
+//                            System.err.println(class_path);
+                        ;
                     } else {
+                        append.putNextEntry(e);
                         while ((count = in.read(data, 0, 1024)) != -1) {
                             append.write(data, 0, count);
                         }
+                        append.closeEntry();
                     }
 //                    append.flush();
+                } else {
+                    append.putNextEntry(e);
+                    append.closeEntry();
                 }
+//                append.closeEntry();
+            }
+            for (String attribute : list_class) {
+                //updateClasses();
+                String s = attribute;
+//                String s = e.toString();
+                index = s.lastIndexOf("/");
+                String classname = classpath.toString() + File.separator + s.substring(index + 1);
+                //xx/xx/xx.class
+                System.err.println("FileInputStream: " + classname);
+                System.err.println("Update: " + s);
+                String class_path = new File(classname).getAbsolutePath();
+                System.err.println("class_path: " + class_path);
+                try {
+                    fis = new FileInputStream(classname);
+                } catch (Exception e) {
+                    if (debug)
+                        System.err.println("something wrong, but do not worry!!! maybe the file is not exist!!!");
+                    continue;
+                }
+
+                while ((len = fis.read(data)) > 0) {
+                    bos.write(data, 0, len);
+                }
+                ZipEntry e1 = new ZipEntry(s);
+                append.putNextEntry(e1);//
+                append.write(bos.toByteArray());
                 append.closeEntry();
+                fis.close();
+                if (debug)
+                    System.err.println("test: " + class_path);
+                ;
             }
 //            int index = classFileName.lastIndexOf(File.separator);
 //            String s = classFileName.substring(index + 1);
@@ -127,7 +178,7 @@ public class ClassUpdateToJar extends BaseCmd {
     }
 
     //// ..\tmp\no1\Programmer.class         ..\tmp\no1\no1.jar
-    private boolean addClassFileToJar(String classFilePath, String jarName, String newJarName) {
+    private boolean addClassFileToJar(String jarName, String newJarName) {
         try {
 //            int index = jarName.lastIndexOf(".");
 //            String path = jarName.substring(0, index);
@@ -136,7 +187,7 @@ public class ClassUpdateToJar extends BaseCmd {
 //            System.err.println("spath:" + path + "-tmp" + spath);
             File oldZipFile = new File(jarName);
             File newZipFile = new File(newJarName);
-            addFileToZipFile(classFilePath, oldZipFile.getAbsolutePath(), newZipFile.getAbsolutePath());
+            addFileToZipFile(oldZipFile.getAbsolutePath(), newZipFile.getAbsolutePath());
             //oldZipFile.delete();
             //newZipFile.renameTo(oldZipFile);
             return true;
@@ -168,14 +219,9 @@ public class ClassUpdateToJar extends BaseCmd {
 
 
         Path tmp = null;
-        final Path realJar;
         try {
-            realJar = into;
-            System.out.println("class join jar " + realJar + " and " + into + "->" + output);
-            //System.out.println("packagename:" + packagename);
-            //jar2dex ..\tmp\no1\Programmer.class -> ..\tmp\no1\no1.jar
-            addClassFileToJar(realJar.toString(), into.toString(), output.toString());
-
+            System.out.println("class update " + into + " --> " + output);
+            addClassFileToJar(into.toString(), output.toString());
         } finally {
             if (tmp != null) {
                 Files.deleteIfExists(tmp);
@@ -189,7 +235,7 @@ public class ClassUpdateToJar extends BaseCmd {
         for (String attribute : list_class) {
             //System.out.println(attribute);
             if (entry.toString().equals(attribute)) {
-                System.out.println(attribute);
+                System.out.println("isModefy: " + attribute);
                 return 1;
             }
         }

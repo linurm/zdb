@@ -54,8 +54,8 @@ public class ClassJoinJar extends BaseCmd {
 
     private boolean addFileToZipFile(String fileName, String jarFileName, String newJarFileName, String mPackageName) {
         try {
-
-            System.err.println(fileName);
+            System.err.println("---------------------------");
+            System.err.println("FileInputStream" + fileName);
             System.err.println(jarFileName);
             System.err.println(newJarFileName);
             System.err.println(mPackageName);
@@ -87,9 +87,9 @@ public class ClassJoinJar extends BaseCmd {
             }
             int index = fileName.lastIndexOf(File.separator);
             String s = fileName.substring(index + 1);
-            s = mPackageName.replace('.', '/') + '/' + s;
+            s = mPackageName.replace('.', '/') + File.separator + s;
             if (debug)
-                System.err.println("s:" + s);
+                System.err.println("Join Entry: " + s);
 
             ZipEntry e = new ZipEntry(s);
 
