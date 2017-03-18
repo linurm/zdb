@@ -69,12 +69,13 @@ if __name__=='__main__':
         index = clz.find('.')
         name = clz[0:index]
         hz = clz[index+1:]
-        classfile = clz
-        class_path = class_dir+os.sep+classfile
-        print class_path
+        classfile = pkg + os.sep + clz
+        class_path = class_dir + os.sep + classfile
+        #print "class: ",classfile
         if os.path.exists(class_path):
             if os.path.isfile(class_path):
                 entry = pkg+os.sep+name+'.'+hz
+                print entry
                 zf.write(class_path, entry)
     zf.close()    
    
