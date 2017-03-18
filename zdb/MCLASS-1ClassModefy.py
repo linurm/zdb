@@ -2,7 +2,7 @@ import os
 #from device import *
 import AGDBDir
 import sys
-#import utils
+import utils
 
 
 ####################################################################
@@ -15,6 +15,8 @@ if __name__=='__main__':
     dex2jar_dir = "{}".format(addr['dex2jar_dir'])
     apk_name = "{}".format(addr['apk_name'])
     smali_dir = "{}".format(addr['smali_dir'])
+    modefy_class_dirname = "{}".format(addr['modefy_class_dirname'])
+    class_list_file = "{}".format(addr['class_list_file'])
     pkg_path = "{}\\{}".format(pkg_dir, apk_name)    
     
 
@@ -33,9 +35,11 @@ if __name__=='__main__':
     # modefy class
     #cmd = '{}\\d2j-modefy-class.bat {}\\{}.jar -f  -o {}\\MainActivity.class -c com.android.tools.sdkcontroller.activities.MainActivity'.format(dex2jar_dir, pkg_path, apk_name, pkg_path)
     #print '#######',cmd
+    cmd = '{}\\{}'.format(pkg_path, modefy_class_dirname)
+    utils.mkdir(cmd)
     
     
-    list_class = '{}\\classlist.txt'.format(pkg_path)
+    list_class = '{}\\{}'.format(pkg_path, class_list_file)
     file = open(list_class)
      
     while 1:
@@ -52,7 +56,9 @@ if __name__=='__main__':
         pkg_name = pkg + '/' + name + '.class'
         #print clz
     # modefy class
-        cmd = '{}\\d2j-modefy-class.bat {}\\{}.jar -f -o {}\\classmodefy\\{}.class -c {}'.format(dex2jar_dir, pkg_path, apk_name, pkg_path, name, pkg_name)
+        cmd = '{}\\{}\\{}'.format(pkg_path, modefy_class_dirname, pkg)
+        utils.mkdir(cmd)
+        cmd = '{}\\d2j-modefy-class.bat {}\\{}.jar -f -o {}\\{}\\{}\\{}.class -c {}'.format(dex2jar_dir, pkg_path, apk_name, pkg_path, modefy_class_dirname, pkg, name, pkg_name)
     #print '########################'
         print '#######',cmd
         os.system("{}".format(cmd))

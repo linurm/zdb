@@ -15,6 +15,9 @@ if __name__=='__main__':
     dex2jar_dir = "{}".format(addr['dex2jar_dir'])
     apk_name = "{}".format(addr['apk_name'])
     smali_dir = "{}".format(addr['smali_dir'])
+    modefy_class_dirname = "{}".format(addr['modefy_class_dirname'])
+    class_list_file = "{}".format(addr['class_list_file'])
+    
     pkg_path = "{}\\{}".format(pkg_dir, apk_name)    
     
     
@@ -36,18 +39,24 @@ if __name__=='__main__':
     #print '########################'
     #print cmd
     #os.system("{}".format(cmd))
+    # delete class of jar
+    cmd = '{}\\d2j-class-update-jar.bat {}\\{} -i {}\\{}-addclass.jar -f -o {}\\{}-updateclass.jar -p {}\\{}'.format(dex2jar_dir, pkg_path, class_list_file, pkg_path, apk_name, pkg_path, apk_name, pkg_path, modefy_class_dirname)
+    #print '#######',cmd
+        #cmd = '{}\\d2j-class-join-jar.bat {}\\addclass\\Utils.class -i {}\\{}.jar -f -p com.googlecode.dex2jar.tools.ZjUtils -o {}\\{}-addclass.jar'.format(dex2jar_dir, pkg_path, pkg_path, apk_name, pkg_path, apk_name)
+        #print '#######',cmd
+    os.system("{}".format(cmd))
     
-    # class join jar
-    list_class = '{}\\classlist.txt'.format(pkg_path)
+    # classes add jar
+    list_class = '{}\\{}'.format(pkg_path, class_list_file)
     file = open(list_class)
     
-    class_dir = '{}\\classmodefy'.format(pkg_path)
+    class_dir = '{}\\{}'.format(pkg_path, modefy_class_dirname)
     
     out_file = '{}\{}-updateclass.jar'.format(pkg_path, apk_name)
     print '#######',out_file 
     #zf = zipfile.zipfile(out_file,'w')
     
-    zf = zipfile.ZipFile(out_file, 'w')
+    zf = zipfile.ZipFile(out_file, 'a')
     while 1:
         line = file.readline()
         if not line:
@@ -68,11 +77,7 @@ if __name__=='__main__':
                 entry = pkg+os.sep+name+'.'+hz
                 zf.write(class_path, entry)
     zf.close()    
-    #cmd = '{}\\d2j-class-update-jar.bat {}\\classlist.txt -i {}\\{}-addclass.jar -f -o {}\\{}-updateclass.jar -p {}\\classmodefy'.format(dex2jar_dir, pkg_path, pkg_path, apk_name, pkg_path, apk_name, pkg_path)
-    #print '#######',cmd
-        #cmd = '{}\\d2j-class-join-jar.bat {}\\addclass\\Utils.class -i {}\\{}.jar -f -p com.googlecode.dex2jar.tools.ZjUtils -o {}\\{}-addclass.jar'.format(dex2jar_dir, pkg_path, pkg_path, apk_name, pkg_path, apk_name)
-        #print '#######',cmd
-    #os.system("{}".format(cmd))
+   
     raw_input('Pause')
 '''
 %ADB_DIR%\adb shell am start -D -n dascom.telecom.vipclub/dascom.telecom.vipclub.InitActivity

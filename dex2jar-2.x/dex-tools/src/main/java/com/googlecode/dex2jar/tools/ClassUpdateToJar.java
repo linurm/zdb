@@ -127,37 +127,33 @@ public class ClassUpdateToJar extends BaseCmd {
                 }
 //                append.closeEntry();
             }
-            for (String attribute : list_class) {
-                //updateClasses();
-                String s = attribute;
-//                String s = e.toString();
-                index = s.lastIndexOf("/");
-                String classname = classpath.toString() + File.separator + s.substring(index + 1);
-                //xx/xx/xx.class
-                System.err.println("FileInputStream: " + classname);
-                System.err.println("Update: " + s);
-                String class_path = new File(classname).getAbsolutePath();
-                System.err.println("class_path: " + class_path);
-                try {
-                    fis = new FileInputStream(classname);
-                } catch (Exception e) {
-                    if (debug)
-                        System.err.println("something wrong, but do not worry!!! maybe the file is not exist!!!");
-                    continue;
-                }
-
-                while ((len = fis.read(data)) > 0) {
-                    bos.write(data, 0, len);
-                }
-                ZipEntry e1 = new ZipEntry(s);
-                append.putNextEntry(e1);//
-                append.write(bos.toByteArray());
-                append.closeEntry();
-                fis.close();
-                if (debug)
-                    System.err.println("test: " + class_path);
-                ;
-            }
+//            for (String attribute : list_class) {
+//                String s = attribute;
+//                index = s.lastIndexOf("/");
+//                String classname = classpath.toString() + File.separator + s.substring(index + 1);
+//                //xx/xx/xx.class
+//                System.err.println("FileInputStream: " + classname);
+//                System.err.println("Update: " + s);
+//                String class_path = new File(classname).getAbsolutePath();
+//                System.err.println("class_path: " + class_path);
+//                try {
+//                    fis = new FileInputStream(classname);
+//                } catch (Exception e) {
+//                    if (debug)
+//                        System.err.println("something wrong, but do not worry!!! maybe the file is not exist!!!");
+//                    continue;
+//                }
+//                while ((len = fis.read(data)) > 0) {
+//                    bos.write(data, 0, len);
+//                }
+//                ZipEntry e1 = new ZipEntry(s);
+//                append.putNextEntry(e1);//
+//                append.write(bos.toByteArray());
+//                append.closeEntry();
+//                fis.close();
+//                if (debug)
+//                    System.err.println("test: " + class_path);
+//            }
 //            int index = classFileName.lastIndexOf(File.separator);
 //            String s = classFileName.substring(index + 1);
 //            s = mPackageName.replace('.', '/') + '/' + s;

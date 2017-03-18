@@ -111,7 +111,7 @@ public class ClassModefy extends BaseCmd {
             String path = jars.substring(0, index + 1);
             //System.err.println("path:" + path);
             File oldZipFile = new File(jars);
-
+            FileOutputStream fos;
             ZipFile war = new ZipFile(oldZipFile.getAbsoluteFile());
             Enumeration<? extends ZipEntry> entries = war.entries();
             String pkg_class = clz;
@@ -126,7 +126,17 @@ public class ClassModefy extends BaseCmd {
                     ClassVisitor ca = new GeneralClassAdapter(cw, "ss", "I");
                     cr.accept(ca, Opcodes.ASM4);
                     byte[] code = cw.toByteArray();
-                    FileOutputStream fos = new FileOutputStream(output.toString());
+                    try {
+                        fos = new FileOutputStream(output.toString());
+                    } catch (Exception ex) {
+                        File f = new File(output.toString());
+                        System.err.println("ttt: "+f.getParent());
+                        File cacheDir = new File(f.getParent());
+                        cacheDir.mkdirs();
+                        fos = new FileOutputStream(output.toString());
+                        //ex.printStackTrace();
+                        //continue;
+                    }
                     fos.write(code);
                     fos.close();
                     //zos.write(cw.toByteArray());
@@ -145,6 +155,7 @@ public class ClassModefy extends BaseCmd {
         public AsmMethodVisit(MethodVisitor mv) {
             super(Opcodes.ASM4, mv);
         }
+
         @Override
         public void visitMethodInsn(int opcode, String owner, String name, String desc) {
             super.visitMethodInsn(opcode, owner, name, desc);

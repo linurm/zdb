@@ -51,6 +51,15 @@ class AGDB:
             if key == "PYTHON_INSTALL_DIR":
                 global python_install_dir_name
                 python_install_dir_name = value
+            if key == "ADD_CLASS_DIRNAME":
+                global add_clas_dirname
+                add_clas_dirname = value
+            if key == "MODEFY_CLASS_DIRNAME":
+                global modefy_class_dirname
+                modefy_class_dirname = value
+            if key == "MODEFY_CLASS_LIST_FILE":
+                global class_list_file
+                class_list_file = value
         self.addr['gdb_dir'] = gdb_dir.replace('"','')
         self.addr['adb_dir'] = adb_dir.replace('"','')
         self.addr['gdbserver_dir'] = gdbserver_dir.replace('"','')
@@ -64,6 +73,10 @@ class AGDB:
         self.addr['smali_dir'] = smali_dir.replace('"','')
         self.addr['python_install_dir_name'] = python_install_dir_name.replace('"','')
         self.addr['ida_file_deviation'] = ida_file_deviation.replace('"','')
+        self.addr['add_clas_dirname'] = add_clas_dirname.replace('"','')
+        self.addr['modefy_class_dirname'] = modefy_class_dirname.replace('"','')
+        self.addr['class_list_file'] = class_list_file.replace('"','')
+        
         return self.addr
                 
 ##############################################

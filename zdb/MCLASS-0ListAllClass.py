@@ -15,6 +15,8 @@ if __name__=='__main__':
     dex2jar_dir = "{}".format(addr['dex2jar_dir'])
     apk_name = "{}".format(addr['apk_name'])
     smali_dir = "{}".format(addr['smali_dir'])
+    class_list_file = "{}".format(addr['class_list_file'])
+    
     pkg_path = "{}\\{}".format(pkg_dir, apk_name)    
     
 
@@ -31,7 +33,7 @@ if __name__=='__main__':
     #os.system("{}".format(cmd))
     
     # modefy class
-    cmd = '{}\\d2j-list-all-class.bat {}\\{}.jar -f -d -o {}\\classlist.txt'.format(dex2jar_dir, pkg_path, apk_name, pkg_path)
+    cmd = '{}\\d2j-list-all-class.bat {}\\{}.jar -f -d -o {}\\{}'.format(dex2jar_dir, pkg_path, apk_name, pkg_path, class_list_file)
     #print '########################'
     print '#######',cmd
     os.system("{}".format(cmd))

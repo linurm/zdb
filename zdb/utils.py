@@ -119,3 +119,13 @@ def jdb_connect(jdb_port):
     jdb.stdin.write("exit\n")
     jdb.wait()
     print ("JDB finished unblocking application.")
+    
+    
+    
+def mkdir(path):    
+    cmd = path
+    if os.path.isdir(cmd):
+        print cmd
+    else:
+        os.makedirs(cmd)
+        print 'mkdir {}'.format(cmd)
