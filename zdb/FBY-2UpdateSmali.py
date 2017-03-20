@@ -17,7 +17,6 @@ if __name__=='__main__':
     smali_dir = "{}".format(addr['smali_dir'])
     pkg_path = "{}\\{}".format(pkg_dir, apk_name)    
     
-    
 
     # apk(dex) to smali
     #print '########################'
@@ -55,12 +54,27 @@ if __name__=='__main__':
         classfile = clz[:-1]'''
     smali_dir='{}\\{}'.format(pkg_path, apk_name)
     smali_dir2='{}\\smali'.format(smali_dir)
-    shutil.rmtree(smali_dir2)
-    #cmd = '{}\\d2j-class-update-jar.bat {}\\classlist.txt -i {}\\{}-addclass.jar -f -o {}\\{}-updateclass.jar -p {}\\classmodefy'.format(dex2jar_dir, pkg_path, pkg_path, apk_name, pkg_path, apk_name, pkg_path)
     new_smali_dir='{}\\smali'.format(pkg_path)
-    print '#######',smali_dir
-    print '#######',new_smali_dir
-    shutil.move(new_smali_dir,smali_dir)
+    
+    if os.path.isdir(new_smali_dir):
+        pass
+        #return
+    
+        if os.path.isdir(smali_dir2):
+            shutil.rmtree(smali_dir2)
+            print 'rmtree {}'.format(smali_dir2)
+        
+    #cmd = '{}\\d2j-class-update-jar.bat {}\\classlist.txt -i {}\\{}-addclass.jar -f -o {}\\{}-updateclass.jar -p {}\\classmodefy'.format(dex2jar_dir, pkg_path, pkg_path, apk_name, pkg_path, apk_name, pkg_path)
+    
+        print '#######',smali_dir2
+        print '#######',new_smali_dir
+        #try:
+        shutil.copytree(new_smali_dir, smali_dir2)
+        #except OSError:
+            #print '{} File is not exist !!!'.format(new_smali_dir)
+            #pass
+    else:
+        print '{} is not exist !!!'.format(new_smali_dir)
         #cmd = '{}\\d2j-class-join-jar.bat {}\\addclass\\Utils.class -i {}\\{}.jar -f -p com.googlecode.dex2jar.tools.ZjUtils -o {}\\{}-addclass.jar'.format(dex2jar_dir, pkg_path, pkg_path, apk_name, pkg_path, apk_name)
         #print '#######',cmd
     #os.system("{}".format(cmd))
