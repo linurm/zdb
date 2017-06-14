@@ -15,7 +15,7 @@ if __name__=='__main__':
     dex2jar_dir = "{}".format(addr['dex2jar_dir'])
     apk_name = "{}".format(addr['apk_name'])
     smali_dir = "{}".format(addr['smali_dir'])
-    add_clas_dirname = "{}".format(addr['add_clas_dirname'])
+    add_class_dirname = "{}".format(addr['add_class_dirname'])
     pkg_path = "{}\\{}".format(pkg_dir, apk_name) 
     
     
@@ -38,14 +38,17 @@ if __name__=='__main__':
     #print '########################'
     #print cmd
     #os.system("{}".format(cmd))
-    class_dir = '{}\\{}'.format(pkg_path, add_clas_dirname)
+    class_dir = '{}\\{}'.format(pkg_path, add_class_dirname)
     utils.mkdir(class_dir)
     
-    pkg = 'com.googlecode.dex2jar.tools.ZjUtils'
-    cn = 'Utils'
+    pkgy = 'com.googlecode.dex2jar.tools.ZjUtils'
+    pkg = 'zj.zfenlly.gua'
+    cny = 'Utils'
+    cn = 'FloatWinService$15'
     
-    fromjar = '{}\\{}.jar'.format(pkg_path, apk_name)
-    tojar = '{}\\{}-addclass.jar'.format(pkg_path, apk_name)
+    fromjar = '{}\\{}-addclassa14.jar'.format(pkg_path, apk_name)
+    tojar = '{}\\{}-addclassa15.jar'.format(pkg_path, apk_name)
+    print '{} ==> {}'.format(fromjar, tojar)
     shutil.copyfile(fromjar, tojar)
     class_path = class_dir + os.sep + cn + '.class'
     # class join jar
@@ -54,7 +57,8 @@ if __name__=='__main__':
     zf.write(class_path, entry)
     zf.close()
     
-    cmd = '{}\\d2j-class-join-jar.bat {}\\classjoin\\Utils.class -i {}\\{}.jar -f -p com.googlecode.dex2jar.tools.ZjUtils -o {}\\{}-addclass.jar'.format(dex2jar_dir, pkg_path, pkg_path, apk_name, pkg_path, apk_name)
+    #below (no use)
+    cmd = '{}\\d2j-class-join-jar.bat {}\\classjoin\\{}.class -i {}\\{}.jar -f -p {} -o {}\\{}-addclass.jar'.format(dex2jar_dir, pkg_path, cn, pkg_path, apk_name, pkg, pkg_path, apk_name)
     print '#######',cmd
     #os.system("{}".format(cmd))
     raw_input('Pause')

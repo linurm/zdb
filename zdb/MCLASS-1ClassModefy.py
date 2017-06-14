@@ -61,7 +61,7 @@ if __name__=='__main__':
         cmd = '{}\\d2j-modefy-class.bat {}\\{}.jar -f -o {}\\{}\\{}\\{}.class -c {}'.format(dex2jar_dir, pkg_path, apk_name, pkg_path, modefy_class_dirname, pkg, name, pkg_name)
     #print '########################'
         print '#######',cmd
-        os.system("{}".format(cmd))
+        #os.system("{}".format(cmd))
     #print '#######',cmd
     #os.system("{}".format(cmd))
     
