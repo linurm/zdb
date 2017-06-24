@@ -30,7 +30,7 @@ def getDevice(serial=None, product=None, adb_path='adb'):
     except (DeviceNotFoundError, NoUniqueDeviceError, RuntimeError):
             # Don't error out if we can't find a device.
         device = None
-        error("Could not find a unique connected device/emulator.")
+        print ("Could not find a unique connected device/emulator.")
     return device
 
 def getVersion(device):
