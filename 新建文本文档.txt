@@ -1,0 +1,34 @@
+VerdeApplication@VerdeApplication.java
+    onApplicationInit@Lifecycle.java
+
+
+
+
+
+onCreate@VerdeApplication.java
+    loadLifecycleListeners()
+        addLifecycleListener@Lifecycle.java
+            onApplicationCreate
+            
+            
+onCreate@VerdeActivity.java
+    onCreate@BK2AndroidAudioManager.java
+    show@SplashScreen.java
+    addWindow
+    start@MainThread.java
+    load@ExpansionFileDownloader.java
+        startDownloadServiceIfRequired@DownloaderClientMarshaller.java
+            startDownloadServiceIfRequired@DownloaderService.java
+                getDownloads@DownloadsDB.java
+                    onCreate@ExpansionFileDownloaderService.java:DownloaderService.java
+                    
+onStart@VerdeActivity.java
+    BK2SocialShareManager.java
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
