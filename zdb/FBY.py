@@ -9,7 +9,7 @@ import time
 ################################################
 
 ####################################################################
-def InstallApk():
+def InstallApk(apkname):
     addr = AGDBDir.AGDB().getAllDir()
     #adb_path = addr['adb_dir'] + "\\adb"
     #print adb_path
@@ -32,13 +32,17 @@ def InstallApk():
     apk_name = "{}".format(addr['apk_name'])
     pkg_path = "{}\\{}".format(pkg_dir, apk_name) 
     
-    cmd = '{}\\{}-signed.apk'.format(pkg_path, apk_name)
+    if apkname == '':
+        cmd = '{}\\{}-signed.apk'.format(pkg_path, apk_name)
+    else:
+        cmd = apkname
     
     
     # install apk
     print '#######',cmd
+    raw_input('')
     
-    dev.install(cmd, True)
+    #dev.install(cmd, True)
     #os.system("{}".format(cmd))
 
     #input("end")
