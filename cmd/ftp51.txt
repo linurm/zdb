@@ -1,1 +1,5 @@
 LatinIME.apk
+PinyinIME.apk
+libjni_pinyinime.so
+SystemUI.apk
+framework.jar

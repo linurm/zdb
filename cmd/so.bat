@@ -28,10 +28,10 @@ call error.bat
 rem %ADB_DIR%\adb push ../add/camera.rk30board.so /system/lib/hw
 call error.bat
 
-%ADB_DIR%\adb push ../add/audio.primary.rk30board.so /system/lib/hw
+rem %ADB_DIR%\adb push ../add/audio.primary.rk30board.so /system/lib/hw
 call error.bat
 
-%ADB_DIR%\adb push ../add/audio.alsa_usb.rk30board.so /system/lib/hw
+rem %ADB_DIR%\adb push ../add/audio.alsa_usb.rk30board.so /system/lib/hw
 call error.bat
 rem rk
 rem %ADB_DIR%\adb push ../add/libcamera_client.so /system/lib
@@ -50,36 +50,36 @@ call error.bat
 
 rem adb push add/libVR.so /system/lib
 rem call error.bat
-%ADB_DIR%\adb push ../add/libsurfaceflinger.so system/lib
+rem %ADB_DIR%\adb push ../add/libsurfaceflinger.so system/lib
 call error.bat
 
 
-%ADB_DIR%\adb push ../add/gralloc.default.so /system/lib/hw
+%ADB_DIR%\adb push ../add/libjni_pinyinime.so /system/lib
 call error.bat
 
-%ADB_DIR%\adb push ../add/hwcomposer.rk30board.so /system/lib/hw
+rem %ADB_DIR%\adb push ../add/hwcomposer.rk30board.so /system/lib/hw
 call error.bat
 
-%ADB_DIR%\adb push ../add/hwcomposer.default.so /system/lib/hw
+rem %ADB_DIR%\adb push ../add/hwcomposer.default.so /system/lib/hw
 call error.bat
 
-%ADB_DIR%\adb push ../add/libinputflinger.so /system/lib
+rem %ADB_DIR%\adb push ../add/libinputflinger.so /system/lib
 call error.bat
 
 rem adb push add/camera.slsiap.so /system/lib/hw
 rem call error.bat
 
-%ADB_DIR%\adb push ../add/libgui.so /system/lib
+rem %ADB_DIR%\adb push ../add/libgui.so /system/lib
 call error.bat
 
-%ADB_DIR%\adb push ../add/libhardware.so /system/lib
+rem %ADB_DIR%\adb push ../add/libhardware.so /system/lib
 call error.bat
 
-%ADB_DIR%\adb push ../add/libandroid_runtime.so /system/lib
+rem %ADB_DIR%\adb push ../add/libandroid_runtime.so /system/lib
 call error.bat
 
 
-%ADB_DIR%\adb push ../add/libinputservice.so /system/lib
+rem %ADB_DIR%\adb push ../add/libinputservice.so /system/lib
 call error.bat
 
 rem adb push recovery /system/bin

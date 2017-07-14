@@ -27,14 +27,14 @@ call error.bat
 
 rem %ADB_DIR%\adb push ..\add\Settings.apk /system/priv-app
 call error.bat
-rem %ADB_DIR%\adb push ..\add\SystemUI.apk /system/priv-app
+%ADB_DIR%\adb push ..\add\SystemUI.apk /system/priv-app/SystemUI
 call error.bat
 rem %ADB_DIR%\adb push ..\add\Keyguard.apk /system/priv-app
 call error.bat
-rem %ADB_DIR%\adb push ..\add\PackageInstaller.apk /system/app
+%ADB_DIR%\adb push ..\add\libjni_pinyinime.so /system/lib
 call error.bat
-rem %ADB_DIR%\adb push ..\add\Zybornit.apk /system/app
-rem call error.bat
+%ADB_DIR%\adb push ..\add\PinyinIME.apk /system/app/PinyinIME
+call error.bat
 %ADB_DIR%\adb push ..\add\LatinIME.apk /system/app/LatinIME
 call error.bat 
 

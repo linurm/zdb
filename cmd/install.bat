@@ -23,7 +23,7 @@ echo "ADB_DIR = %ADB_DIR%"
 rem adb push add\Settings.apk /system/priv-app/
 rem adb push add\SystemUI.apk /system/priv-app/
 rem adb push add\Keyguard.apk /system/priv-app/
-%ADB_DIR%\adb push ..\add\BatteryArray_V2.4.apk /system/app/
+%ADB_DIR%\adb push ..\add\com.google.android.inputmethod.pinyin.apk /system/app/
 rem adb push add\SoundRecorder.apk /system/app/
 rem adb push add\SystemUI.odex /system/priv-app/SystemUI/arm/
 rem call jar.bat

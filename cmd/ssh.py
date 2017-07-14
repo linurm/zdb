@@ -37,12 +37,15 @@ def doShell(client):
         memResult = stderr.read()
     print memResult
     
-    if memResult.find('successfully'):
-        return 0
+    if memResult.find('failed') != -1:
+        print 'build error'
+        memResult = stderr.read()
+        print memResult
+        return 1
     #if stdout.find('make failed to build some targets'):
         #return 1
-    
-    return 1
+    print 'build successfully'
+    return 0
 class Sftp():
     def __init__(self, sftp):
         print "Sftp init"
@@ -78,12 +81,18 @@ class ConfigFile():
 #########################################################
 if __name__=='__main__':
     #os.system("adbdevice.bat");
-    cl = SSHConnect()
-    if doShell(cl) == 1:
-        input('error')
-        sys.exit()
+    while True:
+        cl = SSHConnect()
+        if doShell(cl) == 1:
+            r = raw_input('error r(rebuild?) ')
+            print r
+            #raw_input('')
+            if r == 'r':
+                continue
+            sys.exit()
+        break
         
-    #input("wait")
+    #raw_input("wait")
     sftp = openSftp(cl)
     cf = ConfigFile("ftp51.txt")
     cf.doFile(sftp)
@@ -94,6 +103,8 @@ if __name__=='__main__':
     #os.system("test.bat")
     os.system("adbdevice.bat");
     os.system("apk.bat")
+    os.system("so.bat")
+    os.system("jar.bat")
     os.system("sleep3s.bat")
     os.system("sleep3s.bat")
     os.system("sleep3s.bat")

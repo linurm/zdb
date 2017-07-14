@@ -21,16 +21,16 @@ echo "ADB_DIR = %ADB_DIR%"
 
 %ADB_DIR%\adb remount
 
-%ADB_DIR%\adb push ../add/android.policy.jar /system/framework
+rem %ADB_DIR%\adb push ../add/android.policy.jar /system/framework
 call error.bat
 
-%ADB_DIR%\adb push ../add/framework2.jar /system/framework
+rem %ADB_DIR%\adb push ../add/framework2.jar /system/framework
 call error.bat
 
 %ADB_DIR%\adb push ../add/framework.jar /system/framework
 call error.bat
 
-%ADB_DIR%\adb push ../add/services.jar /system/framework
+rem %ADB_DIR%\adb push ../add/services.jar /system/framework
 call error.bat
 
 
