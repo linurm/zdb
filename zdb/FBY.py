@@ -40,9 +40,11 @@ def InstallApk(apkname):
     
     # install apk
     print '#######',cmd
-    raw_input('')
+    #raw_input('')
     
-    #dev.install(cmd, True)
+    dev.install(cmd, True)
+    
+    
     #os.system("{}".format(cmd))
 
     #input("end")
