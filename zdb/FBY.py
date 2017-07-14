@@ -67,6 +67,7 @@ def RebuildApk():
     
 ###################################################################
 def FbyApk(apkname):
+    #raw_input('')
     addr = AGDBDir.AGDB().getAllDir()
 
     apktool_dir = "{}".format(addr['apktool_dir'])
@@ -81,13 +82,18 @@ def FbyApk(apkname):
         index = apkname.rfind("\\")
         print ''
         #print index
+        #raw_input('')
         apkdir = apkname[0:index]
         print apkdir
+        #raw_input('')
         nameapk = apkname[index+1:]
+        #raw_input('')
         #print nameapk
         index = nameapk.rfind('.')
+        #raw_input('')
         aname = nameapk[0:index]
         print aname
+        #raw_input('')
         
         # apk(dex) to smali
         cmd = '{}\\apktool.bat d -f {} -o {}\\{}\\{}'.format(apktool_dir, apkname, apkdir, aname, aname)
@@ -107,6 +113,7 @@ def FbyApk(apkname):
         cmd = '{}\\d2j-dex2jar.bat {}.apk -f -o {}\\{}.jar'.format(dex2jar_dir, pkg_path, pkg_path, apk_name)
         print '#######',cmd
         os.system("{}".format(cmd))
+    #raw_input('end')
     
 
 ###############################################    
