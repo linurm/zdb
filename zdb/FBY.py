@@ -66,7 +66,7 @@ def RebuildApk():
     #input("")
     
 ###################################################################
-def FbyApk():
+def FbyApk(apkname):
     addr = AGDBDir.AGDB().getAllDir()
 
     apktool_dir = "{}".format(addr['apktool_dir'])
@@ -77,15 +77,36 @@ def FbyApk():
     pkg_path = "{}\\{}".format(pkg_dir, apk_name)    
     cmd = '{}\\apktool.bat d -f {}.apk -o {}\\{}'.format(apktool_dir, pkg_path, pkg_path, apk_name)
     
+    if apkname != '':
+        index = apkname.rfind("\\")
+        print ''
+        #print index
+        apkdir = apkname[0:index]
+        print apkdir
+        nameapk = apkname[index+1:]
+        #print nameapk
+        index = nameapk.rfind('.')
+        aname = nameapk[0:index]
+        print aname
+        
+        # apk(dex) to smali
+        cmd = '{}\\apktool.bat d -f {} -o {}\\{}\\{}'.format(apktool_dir, apkname, apkdir, aname, aname)
+        print '#######',cmd
+        os.system("{}".format(cmd))
+         
+        # apk(dex) to jar       
+        cmd = '{}\\d2j-dex2jar.bat {} -f -o {}\\{}\\{}.jar'.format(dex2jar_dir, apkname, apkdir, aname, aname)
+        print '#######',cmd
+        os.system("{}".format(cmd))
+    else:
+        # apk(dex) to smali
+        print '#######',cmd
+        os.system("{}".format(cmd))
 
-    # apk(dex) to smali
-    print '#######',cmd
-    os.system("{}".format(cmd))
-
-    # apk(dex) to jar
-    cmd = '{}\\d2j-dex2jar.bat {}.apk -f -o {}\\{}.jar'.format(dex2jar_dir, pkg_path, pkg_path, apk_name)
-    print '#######',cmd
-    os.system("{}".format(cmd))
+        # apk(dex) to jar
+        cmd = '{}\\d2j-dex2jar.bat {}.apk -f -o {}\\{}.jar'.format(dex2jar_dir, pkg_path, pkg_path, apk_name)
+        print '#######',cmd
+        os.system("{}".format(cmd))
     
 
 ###############################################    
