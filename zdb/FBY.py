@@ -24,7 +24,7 @@ def InstallApk(apkname):
     #input('========')
     adb_v = utils.getVersion(dev)
     dev.remount()
-    
+    print '====',adb_v
     
     #apktool_dir = "{}".format(addr['apktool_dir'])
     #dex2jar_dir = "{}".format(addr['dex2jar_dir'])
@@ -41,9 +41,10 @@ def InstallApk(apkname):
     # install apk
     print '#######',cmd
     #raw_input('')
-    
-    dev.install(cmd, True)
-    
+    try:
+        dev.install(cmd, True)
+    except subprocess.CalledProcessError as e:
+        print '',e
     
     #os.system("{}".format(cmd))
 

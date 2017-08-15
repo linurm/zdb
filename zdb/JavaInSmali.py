@@ -16,3 +16,5 @@ class_name = raw_input("input class : ")
 class_function_value = raw_input("input function name: ")
 
 print 'L' + package_name_c + "/" + class_name + ";->"+class_function_value
+
+raw_input("")

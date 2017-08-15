@@ -203,6 +203,7 @@ def _subprocess_check_output(*args, **kwargs):
     try:
         return subprocess.check_output(*_get_subprocess_args(args), **kwargs)
     except subprocess.CalledProcessError as e:
+        print 'e:' + e.returncode
         # Show real command line instead of the powershell.exe command line.
         raise subprocess.CalledProcessError(e.returncode, args[0],
                                             output=e.output)
