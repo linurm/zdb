@@ -1158,15 +1158,18 @@ def main(stream=None):
 
     options, args = optparser.parse_args()
 
-    
+    print "             len(args) ",len(args)
 
     if options.help or len(args) == 0:
+        print "@@@@@@@@@@@@@@@@@@@@@@@@1"
         optparser.print_help()
         sys.exit(0)
 
     if options.show_all_headers:
+        print "@@@@@@@@@@@@@@@@@@@@@@@@2"
         do_file_header = do_section_header = do_program_header = True
     else:
+        print "@@@@@@@@@@@@@@@@@@@@@@@@3"
         do_file_header = options.show_file_header
         do_section_header = options.show_section_header
         do_program_header = options.show_program_header
@@ -1218,6 +1221,6 @@ def profile_main():
 
 #-------------------------------------------------------------------------------
 if __name__ == '__main__':
-
+    print '#################'
     main()
     #profile_main()
