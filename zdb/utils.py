@@ -3,6 +3,7 @@ from device import *
 from AGDBDir import AGDB
 import sys
 import subprocess
+import time
 ########################################################
 def split_lines(s):
     """Splits lines in a way that works even on Windows and old devices.
@@ -120,7 +121,13 @@ def jdb_connect(jdb_port):
     jdb.wait()
     print ("JDB finished unblocking application.")
     
-    
+def getDeviceLoop(serial=None, product=None, adb_path='adb'):
+    while(True):
+        dev = getDevice(adb_path='adb')
+        if dev == None:
+            time.sleep(3)
+        else:
+            return dev
     
 def mkdir(path):    
     cmd = path

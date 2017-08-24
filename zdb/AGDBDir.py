@@ -1,5 +1,6 @@
 import os
 import getpass
+import ConfigParser
 
 print getpass.getuser()
 
@@ -78,6 +79,38 @@ class AGDB:
         self.addr['class_list_file'] = class_list_file.replace('"','')
         
         return self.addr
+    def getAllDir2(self):
+        cf = ConfigParser.ConfigParser()
+        cf.read("config2.ini")
+        
+
+        self.addr['gdb_dir'] = cf.get("db", "gdb_dir").replace('Administrator', getpass.getuser())
+        self.addr['adb_dir'] = cf.get("db", "adb_dir")
+        self.addr['gdbserver_dir'] = cf.get("db", "gdbserver_dir").replace('Administrator', getpass.getuser())
+        self.addr['pkg_name'] = cf.get("db", "pkg_name")
+        self.addr['launch_name'] = cf.get("db", "launch_name")
+        self.addr['lib_name'] = cf.get("db", "lib_name")
+        self.addr['pkg_dir'] = cf.get("db", "pkg_dir")
+        self.addr['apktool_dir'] = cf.get("db", "apktool_dir")
+        self.addr['dex2jar_dir'] = cf.get("db", "dex2jar_dir")
+        self.addr['apk_name'] = cf.get("db", "apk_name")
+        self.addr['smali_dir'] = cf.get("db", "smali_dir")
+        self.addr['python_install_dir'] = cf.get("db", "python_install_dir")
+        self.addr['ida_file_deviation'] = cf.get("db", "ida_file_deviation")
+        self.addr['add_class_dirname'] = cf.get("db", "add_class_dirname")
+        self.addr['modefy_class_dirname'] = cf.get("db", "modefy_class_dirname")
+        self.addr['class_list_file'] = cf.get("db", "class_list_file")
+        
+        return self.addr
+        
+    def setConfig(self, name, value):
+        cf = ConfigParser.ConfigParser()
+        cf.read("config2.ini")
+        
+        cf.set("db", name, value)
+        
+        with open("config2.ini","w+") as f:
+            cf.write(f)
                 
 ##############################################
 

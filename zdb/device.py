@@ -101,7 +101,7 @@ def get_device(serial=None, product=None, adb_path='adb'):
         2) The environment variable $ANDROID_SERIAL.
         3) The single device connnected to the system.
     """
-    
+
     if serial is not None:
         return _get_device_by_serial(serial, product, adb_path)
 

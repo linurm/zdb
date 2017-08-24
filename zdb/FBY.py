@@ -10,15 +10,11 @@ import time
 
 ####################################################################
 def InstallApk(apkname):
-    addr = AGDBDir.AGDB().getAllDir()
+    addr = AGDBDir.AGDB().getAllDir2()
     #adb_path = addr['adb_dir'] + "\\adb"
     #print adb_path
-    while(True):
-        dev = utils.getDevice(adb_path=addr['adb_dir']+"\\adb")
-        if dev == None:
-            time.sleep(3)
-        else:
-            break
+    dev = utils.getDeviceLoop(adb_path=addr['adb_dir']+"\\adb")
+
         
     
     #input('========')
@@ -47,7 +43,7 @@ def InstallApk(apkname):
         print '',e
     
     #os.system("{}".format(cmd))
-
+    time.sleep(3)
     #input("end")
     
 ####################################################################
@@ -71,7 +67,7 @@ def RebuildApk():
     print '#######',cmd
     os.system("{}".format(cmd))
     #input("")
-    
+    time.sleep(3)
 ###################################################################
 def FbyApk(apkname):
     #raw_input('')
@@ -121,7 +117,7 @@ def FbyApk(apkname):
         print '#######',cmd
         os.system("{}".format(cmd))
     #raw_input('end')
-    
+    time.sleep(3)
 
 ###############################################    
     

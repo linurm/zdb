@@ -1,0 +1,81 @@
+Ready to learn about measuring your eyesight? It's heady stuff. After this e-mail, you'll never look at your local optic shop the same again.
+
+Here’s the thing: If you can measure, you can quantify; if you can measure, you can start to know what's what; if you can measure, you can know what you really need, and what's probably way too much correction.
+准备好了解测试你的视力？这是令人兴奋的东西。在这封电子邮件之后，你再也看不到你当地的眼镜店了。
+事情是这样的：如果你能测量，你就可以量化；如果你能测量，你就可以开始知道什么是什么；如果你能测量，你就可以知道你真正需要什么，什么可能修正太多。
+There's a brilliant and super simple way to measure your own eyesight, too, and it’s with a ten cent ruler. I'll show you how to do it right here.
+
+(If you want to get a bit more serious about your measurements, you can print out an eye chart and order a test lens kit online for a hundred bucks. But even without those, you can figure out your exact diopters with just that ten cent ruler.)
+有一个聪明和超简单的方法来衡量自己的视力，也是，它与一个十美分的统治者。我会告诉你如何在这里做。
+（如果你想对你的测量更认真一点，你可以打印一张视力表并在网上订购一个一百美元的测试镜头套件。但即使没有这些，你可以找出你的准确度只有十美分的统治者。）
+WARNING: Don't go buying reduced diopter glasses without fully understanding what you're doing. I'm not giving you prescription advice. I'm not offering medical advice. I'm simply teaching you about biology and optics.
+
+Now back to that ruler and how to measure.
+
+A flexible measuring tape is actually best—you know, the kind that rolls up (usually sold cheaply at fabric stores or on Amazon).  You’ll need a ruler or tape measure to be able to measure the distance from your eye to a page (or screen).
+
+Here's how you take the measurement:
+警告：不完全了解自己在做什么，不要去购买屈光度低的眼镜。我不会给你处方的建议。我不提供医疗建议。我只是教你有关生物学和光学。
+现在回到那把尺子如何衡量。
+灵活的卷尺实际上是你所知道的最好的，卷起来的那种（通常在布料商店或亚马逊廉价出售）。你需要一个尺子或卷尺来测量你眼睛到一个页面（或屏幕）的距离。
+这里是你如何进行测量：
+Take off your glasses.
+Look at your screen or a book (printed pages are best).
+Start with your face up quite close, where the text is perfectly clear, and then slowly move back until it is just the tiniest bit blurry. You want to stop at the point where the text stops being totally sharp. Any noticeable change in sharpness and that's your distance.
+Record the distance between your eyes and the page (or screen) in centimeters.
+Now get ready for the thing that blew my mind when I first learned about it.
+摘下你的眼镜。
+看看你的屏幕或一本书（打印页是最好的）。
+从你的脸开始非常接近，在那里的文字是非常清楚的，然后慢慢移动，直到它只是最小的一点模糊。你想停在文本完全停止的地方。锐度的任何明显变化，这就是你的距离。
+记录你的眼睛和页面（或屏幕）之间的距离厘米。
+现在，为我第一次得知这件事的时候做好准备吧。
+A diopter (the number that defines the strength of your glasses) is just a unit of measurement of inverse meters. Get it? A diopter converts directly to a specific distance (as in the centimeters you recorded from your point of clear sight distance to blurriness). It really is shockingly simple, like a lot of the things you'll learn from me. However far you can see before the “blur” converts directly to how many diopters you need for "perfect" distance vision.
+屈光度（定义眼镜强度的数字）只是倒数表的单位。明白了吗？一个屈光度直接转换到一个特定的距离（在你记录你清晰视距点模糊厘米）。这真的是很简单的，就像很多事情你会了解我。但是你可以看到在“模糊”直接转换到多少度你需要“完美”的远视力。
+Are you still not completely with me? Let's use an example:
+你还没有完全与我吗？让我们举一个例子：
+Let's say your glasses are -4.50. This number was obtained at the optometrist’s with you sitting in the chair under the dimmed lights with and all the fancy gear and the smoke and mirrors. There, it seemed impossible for you to figure out this number on your own. But now you realize that -4.50 diopters is just another way of saying "22 centimeters till blurriness."
+让我们说你的眼镜-4.50。在验光师的你坐在椅子上，幽暗的灯光下，所有花哨的齿轮和烟雾和镜子得到这个号码。在那里，你似乎不可能自己算出这个数字。但是现在你发现-4.50度只是另一种方式说“22厘米到模糊。”
+This means that if the text you see on the page becomes even the tiniest bit blurry at 22 centimeters, then you need -4.50 diopters to see the eye chart clearly past the 20/20 line.
+这意味着，如果在22厘米的网页上看到你的文字变得一点点模糊，那么你需要-4.50度看视力表清楚过去的20 / 20线。
+That's it. Nothing complicated about it. Take that in for a moment.
+够了就要这些。这没什么复杂的。把那件事暂时解决。
+To help you convert your centimeters into diopters, I’ve created a handy calculator. Before I give you the link to it though, a word of warning: Your results will possibly be surprising. Your measurements might result in a diopter correction different than the one you received at the optometrist’s.
+帮助你转换你的厘米为度，我创建了一个方便的计算器。在我给你链接之前，一个警告词：你的结果可能会令人吃惊。你的测量结果会有不同的结果比你的验光师接受屈光矫正的。
+Here is how you convert your centimeter result to diopters, using my calculator.
+这里是你如何将你的厘米结果屈光度，用我的计算器。
+This will work for you if you have the most common type of myopia (strain and stimulus). If you have a more complex diagnosis from an ophthalmologist—any kind of actual eye disease—then that's a different topic and should be monitored by a doctor.
+如果你有最常见的近视（拉伤和刺激），这对你有效。如果你从一个医生的一种眼病，是一个不同的主题有更复杂的诊断应该由医生监督。
+You may be wondering how the ruler can work the way an optometrist’s tools do and yet still give you a different result. Simply put, the optometrist most likely gave you more diopters than you actually need most of the time. They tested you in a dark room and gave you the absolute maximum diopter correction. They didn’t account for how your eyesight may vary throughout the day. It also depends how long ago you received your previous glasses and how your eyes have changed.
+你可能想知道如何统治者可以验光师的工具做，仍然给你一个不同的结果的方法。简而言之，验光师最有可能给你比你度数其实最需要的时间。他们在黑暗的房间里测试你，给你绝对的最大屈光度修正。他们没有解释你的视力如何整天变化。这还要看你多久前收到你以前的眼镜，以及你的眼睛是如何变化的。
+This will all make sense once you try measuring and you read through the next few e-mails.
+一旦你尝试测量并通读下几封电子邮件，这一切都会有意义。
+This is one of the first real steps. Take it and you'll feel compelled to go on to get your eyesight back. And just to make sure you do, I’m going to leave you with a bit of homework:
+这是第一个真正的步骤。拿着它，你会觉得不得不继续恢复视力。为了确保你能做到，我会给你留点家庭作业：
+Measure your left and right eye. Do it in the morning, before you start work, and in front of a screen. Do it again at midday and once again in the evening.
+衡量你的左眼和右眼。在早上，在你开始工作之前，在屏幕前做。中午再做一遍，晚上再做一遍。
+Be sure to write down your results. You'll need them tomorrow (when I show you how those numbers tell the future of your eyesight).
+请写下你的结果。你明天就需要它们（当我告诉你这些数字是如何告诉你视力的未来的）。
+Here's an example of how your results should look:
+下面是一个你的结果应该如何显示的例子：
+Morning: Left: 22 cm; Right: 26 cm
+
+Midday: Left: 21 cm; Right: 25 cm
+
+Evening: Left: 19 cm; Right: 22 cm
+
+Remember that these are just examples, and how much the numbers change says a lot about how you are using your eyes and where the problems might lie.
+记住，这些只是例子，数字的变化对你如何使用你的眼睛和问题可能在哪里有很大的影响。
+We'll get to that tomorrow!
+
+Cheers,
+
+- Jake Steiner
+
+ 
+
+P.S.:  We have a very active support group for endmyopia on Facebook.  Hundreds of members discussing eyesight, improving their vision, and lots of tricks and tiops there.  :)
+我们有一个非常积极的支持，脸谱网集团endmyopia。委员讨论视力数百，提高他们的视觉，还有很多技巧和tiops。：）
+It's a closed group, but I'll send you a link once you complete this e-mail series. (and I promise I'll accept your membership request then, when you're ready for it!)
+这是一个封闭的组，但是一旦你完成这个电子邮件系列，我会给你发送一个链接。（然后我保证，当你准备好的时候，我会接受你的会员要求！）
+
+
