@@ -6,9 +6,9 @@ Before I give you the giant reveal I promised yesterday—the one thing you real
 在我给你巨大的揭示（我答应昨天）前，有一件你真的不想对你的眼睛做的事，我们需要回到轴向伸长。我知道，我很糟糕。只要给我一点时间。你需要了解为什么这件事如此糟糕。
 
 Axial elongation happens due to what's often called "hyperopic defocus." You are overprescribed by default (the dark room, the absolute maximum prescription being applied, which is too strong for regular daylight and average use) and you wear your distance glasses a good majority of the time. None of this is good for your eyes.
-轴向伸长是由于所谓的“远视性离焦的。“你是在规定的默认情况下（黑暗的房间里，绝对最大的处方应用，这是强过普通日光和平均使用），你戴远距离眼镜大部分时间。这些对你的眼睛没有好处。
+轴向伸长是由于所谓的“远视性离焦的。“你是在规定的默认情况下（黑暗的房间里，绝对最大的处方应用，这是强过普通日光和平均使用），你大部分时间戴远距离眼镜。这些对你的眼睛没有好处。
 If you were wearing the perfect amount of correction just while looking at a distance, with zero focusing muscle spasm, your glasses wouldn't increase your myopia. But that's hardly ever the case, hence this bit of science:
-
+如果你只是在距离看一次完美的矫正，没有聚焦肌肉痉挛，你的眼镜不会增加你的近视。但事实并非如此，因此这一点科学：
 “If the eye length increases more slowly than does the focal length, the focal plane will be behind the retina, creating hyperopic defocus on the retina. The same occurs if one puts a negative lens over the eye.
 “如果眼睛长度的增加速度比焦距长度慢、焦平面将在视网膜的后面，视网膜上形成远视性离焦。如同一把负透镜戴在眼睛上。
 To regain sharp focus, the retina needs to be displaced backward to where the image is. This is done in two ways: the eye is lengthened by increasing the rate of growth or of remodeling of the sclera at the posterior pole of the eye (Gentle and McBrien, 1999; Nickla et al., 1997), and the retina is pulled back within the eye by the thinning of the choroid, the vascular layer between the retina and sclera (Figure 2B; Wallman et al., 1995; Wildsoet and Wallman, 1995); once distant images are again focused on the retina (emmetropia), both the rate of ocular elongation and the choroid thickness return to normal."
@@ -46,7 +46,7 @@ If this is still making your head spin a bit, go back to the site and check the 
 So where do you go from here?
 那么你从这里去哪里？
 First things first: Don’t go without your glasses. There’s no benefit in that. You can and should wear your glasses for distance vision. You just don't want to wear a lens that is meant to let you see clearly far away while you are focused up close. That focal plane change is huge, and it's a direct stimulus for axial elongation.
-第一件事：你不带眼镜，那有没有好处。你可以而且应该戴你的用于远距离视力的眼镜。你只是不想戴可以让你看清远处的眼镜，聚焦近处。那焦平面的变化是巨大的，它的轴向伸长的直接刺激。
+第一件事：你不带眼镜，那有没有好处。你可以而且应该戴你的用于远距离视力的眼镜。你只是不想戴可以让你看清远处的眼镜，当聚焦近处时。那焦平面的变化是巨大的，它是轴向伸长的直接刺激。
 What you should do, if your current prescription is less than -2.00 diopters, is stop wearing your glasses for close-up viewing, starting right now.
 你应该做的，如果你目前的处方小于-2.00屈光度，是停止带你近距离的观看眼镜，从现在开始。
 If your current prescription is more than -2.00 diopters (easy to test: if you can't see your screen, and also your centimeter results), then it's time to start thinking about a reduced prescription for close-up viewing.
