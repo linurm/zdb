@@ -2,8 +2,8 @@
 echo   %1
 
 echo %~dp0
-cd %~dp0
-echo %cd%
+%~d0
+cd %~p0
 
 python readelf.py
 

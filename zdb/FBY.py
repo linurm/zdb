@@ -48,7 +48,7 @@ def InstallApk(apkname):
     
 ####################################################################
 def RebuildApk():
-    addr = AGDBDir.AGDB().getAllDir()
+    addr = AGDBDir.AGDB().getAllDir2()
 
     apktool_dir = "{}".format(addr['apktool_dir'])
     pkg_dir = "{}".format(addr['pkg_dir'])
@@ -71,7 +71,7 @@ def RebuildApk():
 ###################################################################
 def FbyApk(apkname):
     #raw_input('')
-    addr = AGDBDir.AGDB().getAllDir()
+    addr = AGDBDir.AGDB().getAllDir2()
 
     apktool_dir = "{}".format(addr['apktool_dir'])
     pkg_dir = "{}".format(addr['pkg_dir'])

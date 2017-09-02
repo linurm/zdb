@@ -1176,6 +1176,7 @@ def main(stream=None):
 
     with open(args[0], 'rb') as file:
         try:
+            print '',file
             readelf = ReadElf(file, stream or sys.stdout)
             if do_file_header:
                 readelf.display_file_header()
