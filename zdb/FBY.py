@@ -47,7 +47,7 @@ def InstallApk(apkname):
     #input("end")
     
 ####################################################################
-def RebuildApk():
+def RebuildApk(apkname):
     addr = AGDBDir.AGDB().getAllDir2()
 
     apktool_dir = "{}".format(addr['apktool_dir'])
@@ -55,19 +55,41 @@ def RebuildApk():
     dex2jar_dir = "{}".format(addr['dex2jar_dir'])
     apk_name = "{}".format(addr['apk_name'])
     pkg_path = "{}\\{}".format(pkg_dir, apk_name)    
-    cmd = '{}\\apktool.bat b {}\\{}'.format(apktool_dir, pkg_path, apk_name)
     
+    
+    if apkname != '':
+        # rebuild
+        print apkname
+        cmd = '{}\\apktool.bat b {}'.format(apktool_dir, apkname)
+        print '#######', cmd
+        os.system("{}".format(cmd))
+        
+        index = apkname.rfind("\\")
+        
+        nameapk = apkname[index+1:]
+        
+        namedir = apkname[:index]
+        
+        print nameapk
+        signedapk = '{}\\{}-signed.apk'.format(namedir, nameapk)
+        #apk to jar
+        cmd = 'jarsigner -verbose -keystore android.keystore -storepass 123456 -keypass 123456 -signedjar {} {}\\dist\\{}.apk android.keystore'.format(signedapk, apkname, nameapk)
+        print '#######',cmd
+        os.system("{}".format(cmd))
+    else:
+        # rebuild
+        cmd = '{}\\apktool.bat b {}\\{}'.format(apktool_dir, pkg_path, apk_name)
+        print '#######',cmd
+        os.system("{}".format(cmd))
 
-    # rebuild
-    print '#######',cmd
-    os.system("{}".format(cmd))
-
-    #apk to jar
-    cmd = 'jarsigner -verbose -keystore android.keystore -storepass 123456 -keypass 123456 -signedjar {}\\{}-signed.apk {}\\{}\\dist\\{}.apk android.keystore'.format(pkg_path, apk_name, pkg_path, apk_name, apk_name)
-    print '#######',cmd
-    os.system("{}".format(cmd))
+        signedapk = '{}\\{}-signed.apk'.format(pkg_path, apk_name)
+        #apk to jar
+        cmd = 'jarsigner -verbose -keystore android.keystore -storepass 123456 -keypass 123456 -signedjar {} {}\\{}\\dist\\{}.apk android.keystore'.format(signedapk, apk_name, pkg_path, apk_name, apk_name)
+        print '#######', cmd
+        os.system("{}".format(cmd))
     #input("")
-    time.sleep(3)
+    #time.sleep(3)
+    return signedapk
 ###################################################################
 def FbyApk(apkname):
     #raw_input('')
@@ -79,7 +101,7 @@ def FbyApk(apkname):
     apk_name = "{}".format(addr['apk_name'])
     smali_dir = "{}".format(addr['smali_dir'])
     pkg_path = "{}\\{}".format(pkg_dir, apk_name)    
-    cmd = '{}\\apktool.bat d -f {}.apk -o {}\\{}'.format(apktool_dir, pkg_path, pkg_path, apk_name)
+    
     
     if apkname != '':
         index = apkname.rfind("\\")
@@ -88,6 +110,7 @@ def FbyApk(apkname):
         #raw_input('')
         apkdir = apkname[0:index]
         print apkdir
+        #C:\Users\Administrator\Desktop
         #raw_input('')
         nameapk = apkname[index+1:]
         #raw_input('')
@@ -96,6 +119,7 @@ def FbyApk(apkname):
         #raw_input('')
         aname = nameapk[0:index]
         print aname
+        #ti.android.ble.devicemonitor_1.12_6
         #raw_input('')
         
         # apk(dex) to smali
@@ -109,6 +133,7 @@ def FbyApk(apkname):
         os.system("{}".format(cmd))
     else:
         # apk(dex) to smali
+        cmd = '{}\\apktool.bat d -f {}.apk -o {}\\{}'.format(apktool_dir, pkg_path, pkg_path, apk_name)
         print '#######',cmd
         os.system("{}".format(cmd))
 
@@ -116,7 +141,7 @@ def FbyApk(apkname):
         cmd = '{}\\d2j-dex2jar.bat {}.apk -f -o {}\\{}.jar'.format(dex2jar_dir, pkg_path, pkg_path, apk_name)
         print '#######',cmd
         os.system("{}".format(cmd))
-    #raw_input('end')
+    raw_input('end')
     time.sleep(3)
 
 ###############################################    
