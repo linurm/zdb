@@ -16,7 +16,8 @@ if __name__=='__main__':
                 index = index
             else:
                 apkname = arg[index + 1: index2]
-                #AGDBDir.AGDB().setConfig("apk_name", apkname)
+                print apkname
+                AGDBDir.AGDB().setConfig("apk_name", apkname)
     print apkname
     time.sleep(3)
     #FbyApk(apkname)

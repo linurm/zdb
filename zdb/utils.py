@@ -98,7 +98,8 @@ def parse_ps_output(output):
 
 def get_pids(device, process_name):
     processes = get_processes(device)
-    print "get_pids ",process_name
+    #print "get_pids ",process_name
+    #print processes
     return processes.get(process_name, [])
 
 def adbForward(device):

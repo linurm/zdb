@@ -5,6 +5,7 @@ import sys
 import utils
 import subprocess
 import re
+from ADB import *
 ####################################################################
 
 if __name__=='__main__':
@@ -21,7 +22,7 @@ if __name__=='__main__':
         am_cmd.append(component_name)
         print ("Launching activity {}...".format(component_name))
         
-        #print am_cmd
+        print am_cmd
         (rc, _, _) = dev.shell_nocheck(am_cmd)
         if rc != 0:
             utils.error("Failed to start {}".format(component_name))
@@ -35,6 +36,7 @@ if __name__=='__main__':
         #print 'pid = {}'.format(pid)
         
         cmd = "python {}".format('DBG-jdb.py')
+        adbForwardJdwp(dev, str(pid))
         
         '''p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
         ret = p1.stdout.read()'''

@@ -10,7 +10,7 @@ from utils import *
 ####################################################################
 
 if __name__=='__main__':
-    addr = AGDBDir.AGDB().getAllDir()
+    addr = AGDBDir.AGDB().getAllDir2()
     dev = getDevice(adb_path=addr['adb_dir']+"\\adb")
     adb_v = getVersion(dev)
     print dev.remount()

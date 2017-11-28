@@ -3,15 +3,9 @@ from device import *
 import AGDBDir
 import sys
 import utils
-
+from ADB import *
 ########################################################
 
-################################################
-def adbForward(dev):
-    port = "23946"
-    str = "tcp:{}".format(port)
-    print ("adb forward {}".format(str))
-    dev.forward(str, str)
 ####################################################################
 
 if __name__=='__main__':

@@ -5,7 +5,7 @@ import sys
 import utils
 
 if __name__=='__main__':
-    addr = AGDBDir.AGDB().getAllDir()
+    addr = AGDBDir.AGDB().getAllDir2()
     #dev = utils.getDevice(adb_path=addr['adb_dir']+"\\adb")
     #adb_v = utils.getVersion(dev)
     #dev.remount()

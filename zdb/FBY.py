@@ -62,6 +62,7 @@ def RebuildApk(apkname):
         print apkname
         cmd = '{}\\apktool.bat b {}'.format(apktool_dir, apkname)
         print '#######', cmd
+        raw_input('')
         os.system("{}".format(cmd))
         
         index = apkname.rfind("\\")
@@ -80,6 +81,7 @@ def RebuildApk(apkname):
         # rebuild
         cmd = '{}\\apktool.bat b {}\\{}'.format(apktool_dir, pkg_path, apk_name)
         print '#######',cmd
+        raw_input('')
         os.system("{}".format(cmd))
 
         signedapk = '{}\\{}-signed.apk'.format(pkg_path, apk_name)
