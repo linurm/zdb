@@ -34,29 +34,32 @@ if __name__=='__main__':
         print 'pid = {}'.format(pid)
         #pid = (utils.get_pids(dev, "dascom.telecom.vipclub"))
         #print 'pid = {}'.format(pid)
-        
+        #print str(pid)[1:-1]
         cmd = "python {}".format('DBG-jdb.py')
-        adbForwardJdwp(dev, str(pid))
+        adbForwardJdwp(dev, str(pid)[1:-1])
         
         '''p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
         ret = p1.stdout.read()'''
         #with open(os.devnull, 'wb') as devnull:
             #utils.split_lines
             #, stdout=devnull, stderr=devnull
-        try:
+        '''try:
             ret = (subprocess.check_call(cmd))
         except subprocess.CalledProcessError,c:
             print c.output, c.returncode
             if c.returncode == 4:
                 continue
             else:
-                break
+                break'''
         #ret = os.popen("python {}".format(cmd))
         
-        print "-----------", ret
+        '''print "-----------", ret
         if ret == 4:
-            print 'ret code is ' + ret
+            print 'ret code is ' + ret'''
             #break
+        ret = raw_input('e exit')
+        if ret == 'e':
+            break
     
     print ("exit  ")
     #print p1

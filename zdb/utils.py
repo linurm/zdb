@@ -87,7 +87,7 @@ def parse_ps_output(output):
         process_name = columns[-1]
         #print process_name
         pid = int(columns[pid_column])
-        #print pid,process_name
+        #print pid,":",process_name
         if process_name in processes:
             processes[process_name].append(pid)
         else:

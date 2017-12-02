@@ -15,7 +15,7 @@ if __name__=='__main__':
     else:
         apkname = raw_input('input build apk dir: ')
     
-    raw_input('')
+    #raw_input('')
     RebuildApk(apkname)
 '''
 %ADB_DIR%\adb shell am start -D -n dascom.telecom.vipclub/dascom.telecom.vipclub.InitActivity

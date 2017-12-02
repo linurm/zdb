@@ -8,7 +8,7 @@ import sys
 ####################################################################
 
 if __name__=='__main__':
-    addr = AGDBDir.AGDB().getAllDir()
+    addr = AGDBDir.AGDB().getAllDir2()
 
     apktool_dir = "{}".format(addr['apktool_dir'])
     pkg_dir = "{}".format(addr['pkg_dir'])
@@ -23,7 +23,7 @@ if __name__=='__main__':
     os.system("{}".format(cmd))
     
     # dex to smali
-    cmd = 'java -jar {}\\baksmali-2.1.3.jar {}\\{}.dex -f -o {}\\smali'.format(smali_dir,pkg_path, apk_name, pkg_path)
+    cmd = 'java -jar {} {}\\{}.dex -f -o {}\\smali'.format(smali_dir, pkg_path, apk_name, pkg_path)
     print '#######',cmd
     os.system("{}".format(cmd))
     #raw_input('')

@@ -62,7 +62,7 @@ def RebuildApk(apkname):
         print apkname
         cmd = '{}\\apktool.bat b {}'.format(apktool_dir, apkname)
         print '#######', cmd
-        raw_input('')
+        #raw_input('')
         os.system("{}".format(cmd))
         
         index = apkname.rfind("\\")
@@ -81,12 +81,12 @@ def RebuildApk(apkname):
         # rebuild
         cmd = '{}\\apktool.bat b {}\\{}'.format(apktool_dir, pkg_path, apk_name)
         print '#######',cmd
-        raw_input('')
+        #raw_input('')
         os.system("{}".format(cmd))
 
         signedapk = '{}\\{}-signed.apk'.format(pkg_path, apk_name)
         #apk to jar
-        cmd = 'jarsigner -verbose -keystore android.keystore -storepass 123456 -keypass 123456 -signedjar {} {}\\{}\\dist\\{}.apk android.keystore'.format(signedapk, apk_name, pkg_path, apk_name, apk_name)
+        cmd = 'jarsigner -verbose -keystore android.keystore -storepass 123456 -keypass 123456 -signedjar {} {}\\{}\\dist\\{}.apk android.keystore'.format(signedapk,  pkg_path, apk_name, apk_name, apk_name)
         print '#######', cmd
         os.system("{}".format(cmd))
     #input("")
