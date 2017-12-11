@@ -6,14 +6,32 @@ for arg in sys.argv:
     
 while(True):
 
-    n = raw_input('1:java func 2:smali func 3: package class function   ')
-
+    in_str = raw_input('input java or smali func   ')
+    n = '0'
+    m = '0'
+    if in_str.find(';->') != -1:
+        if in_str.find('L') != -1:
+            if in_str.find('/') != -1:
+                n = '2'
+                if in_str.find('(') != -1:
+                    m = '0'
+                else:
+                    m = '1'
+    else:
+        if in_str.find('.') != -1:
+            n = '1'
+            if in_str.find('(') != -1:
+                m = '0'
+            else:
+                m = '1'
+                
+        
+    #Lcom/jhss/youguu/util/ck;->bg:
+    print n
 
     if n == '1':
         
-        package_name = raw_input("input func (eg. a.b.b.c(...) ): ")
-
-
+        package_name = in_str#raw_input("input func (eg. a.b.b.c(...) ): ")
 
 
         package_name_c = package_name.replace('.','/')
@@ -21,6 +39,9 @@ while(True):
         index = package_name_c.rfind('/')
 
         class_function_value = package_name_c[index + 1:]
+        
+        if m == '1':
+            class_function_value += ':'
 
         class_name = package_name_c[:index]
 
@@ -38,15 +59,16 @@ while(True):
         print ''
         #raw_input("")
     elif n == '2':
-        smali_name = raw_input("input package (eg. Lcom/a/b/c/d/e;->z()Ljava/lang/String; ")
+        smali_name = in_str#raw_input("input package (eg. Lcom/a/b/c/d/e;->z()Ljava/lang/String; ")
         index = smali_name.rfind('-')
         func_name = smali_name[index+2:]
         smali_name = smali_name[:index]
         print ''
         print ''
-        print "search: "
+        #print "search: "
         print ".class public " + smali_name + '         in        ' + smali_name[smali_name.rfind('/')+1:-1] + ".smali"
-        print "ctrl-F:" 
+        #print "ctrl-F:" 
+        print ''
         print func_name
         print ''
 
@@ -60,7 +82,6 @@ while(True):
 
         package_name_c = package_name_c[:index]
 
-        print ''
         print ''
         print 'package ' + package_name_c.replace('/','.') + ";" + '         in        ' + class_name + ".java"
         print ''
