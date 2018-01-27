@@ -36,7 +36,7 @@ if __name__=='__main__':
         #print 'pid = {}'.format(pid)
         #print str(pid)[1:-1]
         cmd = "python {}".format('DBG-jdb.py')
-        adbForwardJdwp(dev, str(pid)[1:-1])
+        adbForwardJdwp(dev, str(pid)[1:-1], '8800')
         
         '''p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
         ret = p1.stdout.read()'''

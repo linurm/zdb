@@ -9,8 +9,8 @@ def adbForward(dev):
     print ("adb forward {}".format(str))
     dev.forward(str, str)
 ################################################
-def adbForwardJdwp(dev, uid):
-    port = "8800"
+def adbForwardJdwp(dev, uid, port):
+    #port = "8800"
     str = "tcp:{}".format(port)
     uids = "jdwp:{}".format(uid)
     print ("adb forward {} {}".format(str, uids))

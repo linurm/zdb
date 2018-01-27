@@ -2,7 +2,7 @@ import os
 import getpass
 import ConfigParser
 
-print getpass.getuser()
+#print getpass.getuser()
 
 class AGDB:
     addr = {}
@@ -82,7 +82,6 @@ class AGDB:
     def getAllDir2(self):
         cf = ConfigParser.ConfigParser()
         cf.read("config2.ini")
-        
 
         self.addr['gdb_dir'] = cf.get("db", "gdb_dir").replace('Administrator', getpass.getuser())
         self.addr['adb_dir'] = cf.get("db", "adb_dir")
@@ -100,13 +99,11 @@ class AGDB:
         self.addr['add_class_dirname'] = cf.get("db", "add_class_dirname")
         self.addr['modefy_class_dirname'] = cf.get("db", "modefy_class_dirname")
         self.addr['class_list_file'] = cf.get("db", "class_list_file")
-        
         return self.addr
         
     def setConfig(self, name, value):
         cf = ConfigParser.ConfigParser()
         cf.read("config2.ini")
-        
         cf.set("db", name, value)
         
         with open("config2.ini","w+") as f:
