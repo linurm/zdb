@@ -124,7 +124,7 @@ def jdb_connect(jdb_port):
     
 def getDeviceLoop(serial=None, product=None, adb_path='adb'):
     while(True):
-        dev = getDevice(adb_path='adb')
+        dev = getDevice(adb_path=adb_path)
         if dev == None:
             time.sleep(3)
         else:
