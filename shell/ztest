@@ -1,0 +1,149 @@
+#!/bin/bash
+
+. build/envsetup.sh
+
+
+TMPDIR=../tmp
+set +x
+
+error_exit()
+{
+	if [ $? -ne 0 ]
+	then
+		set -x
+		echo "error in: $1 "
+		exit $?
+	fi
+}
+
+build_item()
+{
+	#set -x
+	echo "mmm" $1
+	mmm $1
+	#set +x
+	error_exit
+}
+
+
+cp_item()
+{
+	srcfile=$1
+	#dir/name
+	name=${srcfile##*/}
+	dstfile=$TMPDIR/$name
+	
+	is_file_newer $srcfile $dstfile
+	if [ $? -eq 1 ]
+	then
+		echo " cp" $srcfile $dstfile
+		cp $srcfile $dstfile
+	fi
+	error_exit
+}
+
+
+function is_file_newer()
+{
+	if [ ! -f $1 ]; then
+		echo $1 "is not exist"
+		return 0
+	fi
+	
+	if [ ! -f $2 ]; then
+		echo $2 "is not exist"
+		return 1
+	fi
+
+	newer=`find $1 -newer $2`
+	if [ "$newer" == "$1" ]
+	then
+		#echo "$1 is newer"
+		return 1
+	else
+		echo "$1 is older"
+		return 0
+	fi 
+}
+
+build_cp()
+{
+	#tmp1=`stat -c %Y $2`
+	#if [ $? -ne 0 ]
+
+	#then
+		#set -x
+		#echo "error in: $1 "
+		#exit $?
+	#fi
+
+	build_item $1
+	#tmp2=""
+	#tmp2=`stat -c %Y $2`
+	#if [ $tmp1 -ne $tmp2 ]
+	#then
+	
+	cp_item $2
+	
+	
+	
+	#cp $2 $TMPDIR
+	echo ""
+	echo ""
+}
+
+build_item frameworks/base
+cp_item	out/target/product/rk3288/system/framework/framework2.jar 
+cp_item	out/target/product/rk3288/system/framework/framework.jar 
+
+build_cp frameworks/av/services/camera/libcameraservice out/target/product/rk3288/system/lib/libcameraservice.so
+
+
+build_cp frameworks/av/media/libmedia out/target/product/rk3288/system/lib/libmedia.so
+
+build_cp frameworks/av/camera out/target/product/rk3288/system/lib/libcamera_client.so
+
+build_cp system/media/camera/src out/target/product/rk3288/system/lib/libcamera_metadata.so
+
+build_cp frameworks/base/services/java out/target/product/rk3288/system/framework/services.jar
+
+
+build_cp frameworks/base/policy out/target/product/rk3288/system/framework/android.policy.jar 
+
+
+build_cp frameworks/native/libs/gui out/target/product/rk3288/system/lib/libgui.so
+
+build_cp frameworks/native/libs/ui out/target/product/rk3288/system/lib/libui.so
+
+build_cp frameworks/native/services/surfaceflinger out/target/product/rk3288/system/lib/libsurfaceflinger.so
+
+
+
+build_cp frameworks/base/core/jni out/target/product/rk3288/system/lib/libandroid_runtime.so
+
+build_cp hardware/rk29/hwcomposer_rga out/target/product/rk3288/system/lib/hw/hwcomposer.rk30board.so
+
+build_cp hardware/rk29/libgralloc_ump out/target/product/rk3288/system/lib/hw/gralloc.rk30board.so
+
+build_item hardware/rk29/camera
+cp_item out/target/product/rk3288/system/lib/hw/camera.rk30board.so 
+cp_item out/target/product/rk3288/system/lib/libisp_silicomimageisp_api.so 
+
+
+build_cp hardware/libhardware/modules/gralloc out/target/product/rk3288/system/lib/hw/gralloc.default.so
+
+build_cp hardware/libhardware/modules/hwcomposer out/target/product/rk3288/system/lib/hw/hwcomposer.default.so
+
+build_cp frameworks/base/services/input out/target/product/rk3288/system/lib/libinputservice.so
+
+
+#build_cp packages/apps/Camera2 out/target/product/rk3288/system/app/Camera2.apk
+
+echo -e "\a"
+
+
+
+
+
+
+

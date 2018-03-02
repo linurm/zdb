@@ -1,0 +1,124 @@
+#!/bin/bash
+
+
+
+TMPDIR=../tmp
+#set +x
+
+error_exit()
+{
+	if [ $? -ne 0 ]
+	then
+		set -x
+		echo "error in: $1 "
+		exit $?
+	fi
+}
+
+build_item()
+{
+	#set -x
+	echo "mmm" $1
+	mmm $1
+	#set +x
+	error_exit
+}
+
+
+cp_item()
+{
+	srcfile=$1
+	#dir/name
+	name=${srcfile##*/}
+	dstfile=$TMPDIR/$name
+	
+	is_file_newer $srcfile $dstfile
+	if [ $? -eq 1 ]
+	then
+		echo " cp" $srcfile $dstfile
+		cp $srcfile $dstfile
+	fi
+	error_exit
+}
+
+
+function is_file_newer()
+{
+	if [ ! -f $1 ]; then
+		echo $1 "is not exist"
+		return 0
+	fi
+	
+	if [ ! -f $2 ]; then
+		echo $2 "is not exist"
+		return 1
+	fi
+
+	newer=`find $1 -newer $2`
+	if [ "$newer" == "$1" ]
+	then
+		#echo "$1 is newer"
+		return 1
+	else
+		echo "$1 is older"
+		return 0
+	fi 
+}
+
+build_cp()
+{
+	#tmp1=`stat -c %Y $2`
+	#if [ $? -ne 0 ]
+
+	#then
+		#set -x
+		#echo "error in: $1 "
+		#exit $?
+	#fi
+
+	build_item $1
+	#tmp2=""
+	#tmp2=`stat -c %Y $2`
+	#if [ $tmp1 -ne $tmp2 ]
+	#then
+	
+	cp_item $2
+	
+	
+	
+	#cp $2 $TMPDIR
+	echo ""
+	echo ""
+}
+
+para=-rNu
+r_dir=/home/rk3288/bak-source
+
+
+diff_fun()
+{
+	if [ "$1" = "" ]
+	then
+		exit
+	fi
+	echo $r_dir/$1
+	diff -X zexclude_files $para $1 $r_dir/$1 >> zout.zdiff
+
+}
+
+
+
+while read line
+do
+    diff_fun $line
+done < ff
+
+
+echo -e "\a"
+
+
+
+
+
+
+

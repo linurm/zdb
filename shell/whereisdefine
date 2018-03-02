@@ -1,0 +1,21 @@
+#!/bin/bash
+
+PS4="        "
+set -x
+
+#find . -name $1 -exec grep -rnH $2 --color=auto {} \;
+if [ $# = 2 ];
+then
+	n1=$1
+	n2=$2
+	find . -name $n1 -exec grep -rnl $n2 {} \;| sed -e s/.o$/.c/g #| grep -rn $n2	#| awk -F "[/:]" '{print $NF}' | sed -e s/.o$/.c/g 
+	
+	#echo $files
+else
+	echo "error parameter";
+fi
+
+
+#find ./ \( -path "./out" -o -path "./kernel" \) -prune -o -type f -mtime -10
+
+

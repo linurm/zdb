@@ -1,0 +1,49 @@
+#!/bin/sh
+
+PS4="        "
+set +x
+#echo off
+TMP_DIR="/home/tmp"
+
+delete_dir()
+{
+	echo "rm -rf $1/*"
+	rm -rf $1/*
+}
+
+if [ $# = 1 ]||[ $# = 2 -a "$2"x = "-h"x ];
+then
+	echo "find . -name '$1'"
+	find . -name "$1"
+
+elif [ $# = 2 ];
+then
+	if [ "$2" = "-ls" ]
+	then
+		echo "find . -name '$1' '$2'"
+		find . -name "$1" "$2"
+	elif [ "$2" = "-cp" ];
+	then
+		echo "find . -name '$1' -exec cp --parents -rf {} '$TMP_DIR' \;"
+		find . -name "$1" -exec zcp {} "$TMP_DIR" \;
+	elif [ "$2" = "-cprm" ];
+	then
+		delete_dir $TMP_DIR
+		echo "find . -name '$1' -exec cp --parents -rf {} '$TMP_DIR' \;"
+		find . -name "$1" -exec zcp {} "$TMP_DIR" \;
+	else
+		echo "find . -name '$1' -exec grep -rnH '$2' --color=auto {} \;"
+		find . -name "$1" -exec grep -rnH "$2" --color=auto {} \;
+	fi
+elif [ $# = 3 ];
+then
+	echo "find . -name '$1' -exec grep -rnl '$2' {} \; -exec grep -rnH '$3' --color=auto {} \;"
+	find . -name "$1" -exec grep -rnl "$2" {} \; -exec grep -rnH "$3" --color=auto {} \;
+else
+	echo "error parameter";
+fi
+
+
+#find ./ \( -path "./out" -o -path "./kernel" \) -prune -o -type f -mtime -10
+
+

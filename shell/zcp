@@ -1,0 +1,76 @@
+#!/bin/sh
+
+PS4="			"
+set +x
+
+
+TMP_DIR="/home/tmp"
+
+echo $0 $1 $2
+
+error_exit()
+{
+	if [ $? -ne 0 ]
+	then
+		set -x
+		echo "error in: $1 "
+		exit $?
+	fi
+}
+
+delete_dir()
+{
+	echo "rm -rf $1/*"
+	rm -rf $1/*
+}
+
+
+#参数为2个，执行
+if [ $# -eq 1 ]
+then
+	echo off
+else
+	if [ $# -eq 2 ]
+	then
+		echo off
+	else
+		echo "not right param"
+		exit
+	fi
+fi
+
+
+
+if [ -d $1 ]
+then
+	echo "$1 is exist"
+else
+	if [ ! -f $1 ]
+	then
+		echo "$1 is not exist"
+		exit
+	fi
+	
+fi
+
+
+if [ -d $TMP_DIR ]
+then
+	echo "$TMP_DIR is exist"
+	if [ "$2" = "-rm" ]
+	then
+		delete_dir $TMP_DIR
+	fi
+else
+	echo "$TMP_DIR is not exist"
+
+	exit
+fi
+
+#rm -rf $TMP_DIR/*
+
+echo "cp --parents -rf " $1 $TMP_DIR
+cp --parents -rf $1 $TMP_DIR
+
+
+
