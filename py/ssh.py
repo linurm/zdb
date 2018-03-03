@@ -74,18 +74,18 @@ class ConfigFile():
             if files[0] == 'get':
                 # print files.__len__()
                 if files.__len__() == 3:
-                    print 'get ...... ' + files[1], '  and  ', files[2],
+                    print 'get ...... ' + files[1], '  -->  ', files[2],
                     sftp.Get(files[1], files[2])
-                    print "                   OK"
+                    print " OK !!!"
                 else:
                     print files[0], "param error"
             if files[0] == 'put':
                 # print files.__len__()
                 # print files
                 if files.__len__() == 3:
-                    print 'put ...... ' + files[1], '  and  ', files[2],
+                    print 'put ...... ' + files[1], '  -->  ', files[2],
                     sftp.Put(files[1], files[2])
-                    print "                   OK"
+                    print " OK !!!"
                 else:
                     print files[0], "param error"
 

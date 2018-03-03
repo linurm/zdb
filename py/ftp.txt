@@ -1,4 +1,0 @@
-put C:\Users\Administrator\Desktop\trip_mipi_1080.dtsi /home/rk3288/9d/lollipop/kernel/arch/arm/boot/dts/trip_mipi_1080.dtsi
-cmd /home/rk3288/9d/lollipop/mk -k
-get /home/rk3288/9d/lollipop/kernel/kernel.img E:\WORK\arm\rk3288\arm\rk3288\AndroidTool_Release_v2.35\rockdev\kernel.img
-get /home/rk3288/9d/lollipop/kernel/resource.img E:\WORK\arm\rk3288\arm\rk3288\AndroidTool_Release_v2.35\rockdev\resource.img
