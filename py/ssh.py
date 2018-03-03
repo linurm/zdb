@@ -101,5 +101,5 @@ if __name__ == '__main__':
     cf.doFile(sftp)
     cf.close()
     SSHClose(cl)
-    os.system("cmd")
+    # os.system("cmd")
 # os.system("reboot.bat")

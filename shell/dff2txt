@@ -1,0 +1,122 @@
+#!/bin/bash
+echo $0 $@
+sleep 1
+if [ $# = 2 ]
+then
+	echo ""
+else
+	echo "parameter error"
+	echo "$0 pad firefly "
+	exit 1
+fi
+if [ ! -f diff.txt ]
+then
+	echo "create diff.txt"
+else
+	rm diff.txt
+fi
+
+
+exclude_dir="-x=.svn --exclude=*.o --exclude=*.cmd --exclude=*.mod.c --exclude=*.su"
+
+function get_make_command()
+{
+  echo diffUboot
+  #echo diffAndroid
+  #echo diffKernel
+}
+
+function makeTime()
+{
+    local start_time=$(date +"%s")
+    $(get_make_command) "$@"
+    local ret=$?
+    local end_time=$(date +"%s")
+    local tdiff=$(($end_time-$start_time))
+    local hours=$(($tdiff / 3600 ))
+    local mins=$((($tdiff % 3600) / 60))
+    local secs=$(($tdiff % 60))
+    local ncolors=$(tput colors 2>/dev/null)
+    if [ -n "$ncolors" ] && [ $ncolors -ge 8 ]; then
+        color_failed="\e[0;31m"
+        color_success="\e[0;32m"
+        color_reset="\e[00m"
+    else
+        color_failed=""
+        color_success=""
+        color_reset=""
+    fi
+    echo
+    if [ $ret -eq 0 ] ; then
+        echo -n -e "${color_success}#### make completed successfully "
+    else
+        echo -n -e "${color_failed}#### make failed to build some targets "
+    fi
+    if [ $hours -gt 0 ] ; then
+        printf "(%02g:%02g:%02g (hh:mm:ss))" $hours $mins $secs
+
+	echo $hours $mins $secs >> t.txt
+    elif [ $mins -gt 0 ] ; then
+        printf "(%02g:%02g (mm:ss))" $mins $secs
+    elif [ $secs -gt 0 ] ; then
+        printf "(%s seconds)" $secs
+    fi
+    echo -e " ####${color_reset}"
+    echo
+    return $ret
+}
+
+function diffFile()
+{
+
+	echo -ne "\033[37;40mdiff $1 $2 $3 >> $4 ...... \033[0m"
+	diff $exclude_dir $1 $2 $3 >> diff.txt
+	#sleep 1
+	echo -e "\033[0m  OK"
+}
+
+function diffFiles()
+{
+	diffFile -urq $1/$3 $2/$3
+
+}
+function diffUbootFiles()
+{
+	diffFile -urq $1/$3 $2/$4
+}
+function diffUboot()
+{
+	diffUbootFiles $@ u-boot uboot
+}
+function diffAndroid()
+{
+	#diffFiles $@ libcore
+	#diffFiles $@ vendor
+	#diffFiles $@ developers
+	diffFiles $@ device
+	diffFiles $@ frameworks
+	#diffFiles $@ hardware
+	#diffFiles $@ development
+	diffFiles $@ packages
+	#diffFiles $@ system
+	#diffFiles $@ art
+    #diffFiles $@ bionic
+    #diffFiles $@ external
+    #diffFiles $@ bootable
+}
+function diffKernel()
+{
+	diffFiles $@ kernel
+}
+
+makeTime $@
+#diffFile -urq $1/build $2/build  $3
+#diffFile -urq $1/device $2/device  $3
+#diffFile -urq $1/frameworks $2/frameworks  $3
+#diffFile -urq $1/hardware $2/hardware  $3
+#diffFile -urq $1/kernel $2/kernel  $3
+#diffFile -urq $1/packages $2/packages  $3
+#diffFile -urq $1/system $2/system  $3
+#diffFile -urq $1/u-boot $2/u-boot  $3
+
+
