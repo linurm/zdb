@@ -65,7 +65,6 @@ class ConfigFile():
             l = line.strip('\r\n').strip('\n')
             files = l.split(' ')
             if files == '':
-                # print '1'
                 continue
             if files[0] == 'cmd':
                 cmd = ' '.join(files[1:])
