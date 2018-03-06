@@ -177,7 +177,7 @@
 							compatible = "rockchip,on-cmds";
 							rockchip,cmd_type = <LPDT>;
 							rockchip,dsi_id = <0>;
-							rockchip,cmd = <0x39    0xB6    0xa0 0xa0 0xE0>;
+							rockchip,cmd = <0x39    0xB6    0xb0 0xb0 0xE0>;
 							rockchip,cmd_delay = <0>;
 					};
 					rockchip,on-cmds18 {
