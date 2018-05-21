@@ -3,17 +3,19 @@ import os
 import re
 import shutil
 import tarfile
+#import paramiko
 
 
 ###########################################################
 def TarDir(fname):
-    t = tarfile.open(fname + ".tar.gz", "w:gz")
-    for root, dirs, files in os.walk(fname):
-        print root, files
-        for file in files:
-            fullpath = os.path.join(root, file)
-            t.add(fullpath)
-    t.close()
+    if look_this_function == 0:
+        t = tarfile.open(fname + ".tar.gz", "w:gz")
+        for root, dirs, files in os.walk(fname):
+            #print root, files
+            for file in files:
+                fullpath = os.path.join(root, file)
+                t.add(fullpath)
+        t.close()
     print fname+' =====> ' + fname + ".tar.gz"
 
 def MkDir(Dir):
@@ -50,7 +52,6 @@ def copyFiles(sourceDir, targetDir):
             #print nPos
 
             aSourceDirFile = os.path.abspath(aSourceDir + os.path.sep + nPos)
-
             aDstDirFile = os.path.abspath(aOutDir + os.path.sep + nPos)
             #print aDstDirFile
 
@@ -63,12 +64,17 @@ def copyFiles(sourceDir, targetDir):
                     shutil.copy2(aSourceDirFile, aDstDirFile)
                 print aSourceDirFile +"   ==>   "+aDstDirFile
 
-                
+####################################################################################              
 def copyFileToDir(sourceFile):
 
     aSourceDirFile = os.path.abspath(sourceFile)
     aDstDirFile = CurDirName + os.path.sep + OutDir + os.path.sep + sourceFile
 
+    #tmp = aSourceDirFile#[aSourceDirFile.rfind('.'):]
+    #print tmp
+    #if tmp.find('.git') != -1:
+        #print '.git dir#return
+    #print tmp
     if os.path.exists(aSourceDirFile):
         if os.path.exists(os.path.dirname(aDstDirFile)):
             ''
@@ -76,9 +82,11 @@ def copyFileToDir(sourceFile):
             MkDir(os.path.dirname(aDstDirFile))
             #print 'mkdir'
         if os.path.isdir(aSourceDirFile):
-            print aSourceDirFile + "   ===>   " + aDstDirFile
+            if aSourceDirFile.find('.git') == -1:
+                print aSourceDirFile + "   ===>   " + aDstDirFile
             if look_this_function == 0:
-                shutil.copytree(aSourceDirFile, aDstDirFile)
+                ignore = shutil.ignore_patterns('*.git', '*.svn', '*.o', '*.cmd')
+                shutil.copytree(aSourceDirFile, aDstDirFile, ignore)
         else:
             print aSourceDirFile + "   ==>   " + aDstDirFile
             if look_this_function == 0:
@@ -114,6 +122,7 @@ def copyFileFromDiffTxt(txtFile):
                 copyFileToDir(line.split(" ")[3])
             else:
                 if line.find("Only") == 0:
+                    #if line.split(" ")[3]:
                     a = line.split(" ")[2].replace(":", os.path.sep, 1) + line.split(" ")[3]
                     #print a
                     b = a.strip('\r\n').strip('\n')
@@ -192,13 +201,22 @@ def copyTargetFileToDir(targetDir, sourceFile, outDir):
     else:
         print '\033[1;31;40m'
         print aSourceDirFile + ' is not exists'
-        print '\033[0m' 
-
+        print '\033[0m'
+##################################################################
+def copyLibTest():
+    aSourceDirFile = "E:\\WORK\\arm\\rk3288\\arm\\rk3288\\source\\uvc\\ztest3\\zt\\api\\build\\intermediates\\ndk\\debug\\lib\\armeabi-v7a\\libJniCamera.so"
+    aDstDirFile = "F:\\fbyapk\\cmd\\tmp\\lib\\6.5\\libJniCamera.so"
+    if os.path.exists(os.path.dirname(aDstDirFile)):
+        ''
+    else:
+        MkDir(os.path.dirname(aDstDirFile))
+    if look_this_function == 0:
+        shutil.copy2(aSourceDirFile, aDstDirFile)
 ##################################################################
 look_this_function = 0
 #1: yes 0: no
 OutDir = 'out'
-TargetDir = 'nd/kernel'
+TargetDir = 'pad/kernel'
 #TargetDir = '1\\1test'
 CurDirName = os.getcwd()
 ##################################################################
@@ -211,9 +229,11 @@ if __name__=='__main__':
     #copyFiles("pad", "test")
     #   test\frameworks\av\camera\Camera.cpp
     #copyFileToDir("test\\frameworks\\av\\camera\\Camera.cpp", "test", "out")
-    #copyFileFromDiffTxt("2.txt")
+    copyFileFromDiffTxt("diff.txt")
     
-    getCfilesByOfilesToDir(CurDirName+os.path.sep+TargetDir, TargetDir, OutDir)
+    #getCfilesByOfilesToDir(CurDirName+os.path.sep+TargetDir, TargetDir, OutDir)
 
     TarDir(OutDir)
     #copyFile2FromTxt("1.txt")
+
+    #copyLibTest()

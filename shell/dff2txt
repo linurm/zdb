@@ -21,9 +21,9 @@ exclude_dir="-x=.svn --exclude=*.o --exclude=*.cmd --exclude=*.mod.c --exclude=*
 
 function get_make_command()
 {
-  echo diffUboot
+  #echo diffUboot
   #echo diffAndroid
-  #echo diffKernel
+  echo diffKernel
 }
 
 function makeTime()

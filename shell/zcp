@@ -4,7 +4,7 @@ PS4="			"
 set +x
 
 
-TMP_DIR="/home/tmp"
+TMP_DIR="/home/linurm/tmp"
 
 echo $0 $1 $2
 
