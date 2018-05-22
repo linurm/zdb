@@ -49,11 +49,17 @@ class Sftp():
 
     def exec_command(self, command):
         stdin, stdout, stderr = self.client.exec_command(command=command)
-        result = stderr.read()
-        if result.find('Error') != -1:
-            return result
-        result = stdout.read()
-        return result
+        channel = stderr.channel
+        status = channel.recv_exit_status()
+        # print status
+
+        if status == 0:
+            result = stdout.read()
+            print result
+        else:
+            result = stderr.read()
+            print result
+        return status
 
     def __get_all_files_in_remote_dir(self, sftp, remote_dir):
         all_files = list()
@@ -143,7 +149,9 @@ class ConfigFile():
             if files[0] == 'cmd':
                 cmd = ' '.join(files[1:])
                 print 'do command : ', cmd
-                print sftp.exec_command(cmd)
+                # cmd = 'cd /home/work/vm/ascendmanager/zr ; pwd'
+                if sftp.exec_command(cmd) != 0:
+                    return
             if files[0] == 'get':
                 # print files.__len__()
                 if files.__len__() == 3:
@@ -187,9 +195,16 @@ class ConfigFile():
 if __name__ == '__main__':
     cl = SSHConnect()
     sftp = openSftp(cl)
-    cf = ConfigFile("ftp.txt")
-    cf.doFile(sftp)
-    cf.close()
+    while True:
+        cf = ConfigFile("ftp.txt")
+        cf.doFile(sftp)
+        cf.close()
+        input_value = raw_input('q:quit, other:continue')
+        if input_value == 'q':
+            break
+        if input_value == 'Q':
+            break
+
     SSHClose(cl)
     # os.system("cmd")
 # os.system("reboot.bat")
