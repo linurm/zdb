@@ -86,33 +86,54 @@ class Sftp():
 
     def upload(self, local_dir, remote_dir):
         self.__ismkdir__(remote_dir)
+        # print local_dir
+        if local_dir.startswith('.\\'):
+            local = local_dir
+            # print 'local1:', local
+            local_mask = '.'
+        else:
+            len = local_dir.split('\\').__len__()
+            local = local_dir.split('\\')[len - 1]
+            local_mask = local_dir.rfind('\\')
+            local_mask = local_dir[:local_mask]
+            # print local_mask
+            # print 'local2:', local
 
-        aaa = os.path.join(remote_dir, local_dir).replace('\\', '/')
-        # print aaa
+        aaa = os.path.join(remote_dir, local).replace('\\', '/')
+        #print '---:', aaa
+        # print 'local_dir:', local_dir
+        # /home/linurm/3288/9d/lollipop/./kernel0.
         self.__ismkdir__(aaa)
+        # remote_dir = aaa
         try:
             for root, dirs, files in os.walk(local_dir):
+                root2 = '.' + root.split(local_mask)[1]
+                # root2 = root[root.rfind(local_mask):]
+                #print 'root2:', root2
                 for name in dirs:
-                    local_path = os.path.join(root, name)
-
+                    #print 'root:', root
+                    local_path = os.path.join(root2, name)
                     # a = local_path.replace('\\', '/')
-                    # print a
+                    #print '@@@local path', local_path
                     remote_path = os.path.join(remote_dir, local_path)
                     remote_path = remote_path.replace('\\', '/')
-                    # print remote_path
+                    #print '@@@mkdir remote path', remote_path
                     self.__ismkdir__(remote_path)
-                for filespath in files:
-                    local_file = os.path.join(root, filespath)
-                    print local_file, '------------------'
-                    a = local_file.replace('\\', '/')
-                    remote_file = os.path.join(remote_dir, a).replace('\\', '/')
+                for file in files:
+                    remote_path = os.path.join(remote_dir, root2)
+                    # print remote_path, ' remote_path'
+                    local_file = os.path.join(root2, file)
+                    #print local_file, '-------local file-----------'
+                    # print file
+                    remote_file = os.path.join(remote_path, file).replace('\\', '/')
+                    #print remote_file, '--------remote file----------'
                     try:
                         self.sftp.put(local_file, remote_file)
                     except Exception, e:
                         self.sftp.mkdir(os.path.split(remote_file)[0])
                         self.sftp.put(local_file, remote_file)
 
-                    print "upload %s to remote %s" % (local_file, remote_file)
+                    print "upload %s   =====>   %s" % (local_file, remote_file)
 
         except Exception, e:
             print e
@@ -177,7 +198,7 @@ class ConfigFile():
                     print " OK !!!"
                 else:
                     print files[0], "param error"
-            if files[0] == 'puts':
+            if files[0] == 'putdir':
                 # print files.__len__()
                 # print files
                 if files.__len__() == 3:
