@@ -100,7 +100,7 @@ class Sftp():
             # print 'local2:', local
 
         aaa = os.path.join(remote_dir, local).replace('\\', '/')
-        #print '---:', aaa
+        # print '---:', aaa
         # print 'local_dir:', local_dir
         # /home/linurm/3288/9d/lollipop/./kernel0.
         self.__ismkdir__(aaa)
@@ -109,24 +109,24 @@ class Sftp():
             for root, dirs, files in os.walk(local_dir):
                 root2 = '.' + root.split(local_mask)[1]
                 # root2 = root[root.rfind(local_mask):]
-                #print 'root2:', root2
+                # print 'root2:', root2
                 for name in dirs:
-                    #print 'root:', root
+                    # print 'root:', root
                     local_path = os.path.join(root2, name)
                     # a = local_path.replace('\\', '/')
-                    #print '@@@local path', local_path
+                    # print '@@@local path', local_path
                     remote_path = os.path.join(remote_dir, local_path)
                     remote_path = remote_path.replace('\\', '/')
-                    #print '@@@mkdir remote path', remote_path
+                    # print '@@@mkdir remote path', remote_path
                     self.__ismkdir__(remote_path)
                 for file in files:
                     remote_path = os.path.join(remote_dir, root2)
                     # print remote_path, ' remote_path'
                     local_file = os.path.join(root2, file)
-                    #print local_file, '-------local file-----------'
+                    # print local_file, '-------local file-----------'
                     # print file
                     remote_file = os.path.join(remote_path, file).replace('\\', '/')
-                    #print remote_file, '--------remote file----------'
+                    # print remote_file, '--------remote file----------'
                     try:
                         self.sftp.put(local_file, remote_file)
                     except Exception, e:
@@ -141,19 +141,71 @@ class Sftp():
     def __isdir__(self, path):
         return
 
-    def download(self, local_dir, remote_dir):
-        files = self.sftp.listdir_attr(remote_dir)
-        print remote_dir
+    def download(self, local_dir, remote_dir, remote_path):
+        files = self.sftp.listdir_attr(remote_dir + '/' + remote_path)
+        # print " d            ,", remote_dir
         # Todo
+        # print files
         for f in files:
-            print f
-            '''try:
-                self.sftp.get(os.path.join(remote_dir, f), os.path.join(local_dir, f))
-            except Exception as err:
-                print(err)'''
+            if stat.S_IFMT(f.st_mode) == stat.S_IFDIR:
+                # if f.startwith('d'):
+                tmpdir = (local_dir + "\\" + remote_path + "\\" + f.filename).replace('/', '\\')
+                if os.path.exists(tmpdir) == False:
+                    print "mkdirs ", tmpdir
+                    os.makedirs(tmpdir)
+                self.download(local_dir, remote_dir, remote_path + "/" + f.filename)
+
+                # print f.filename
+            if stat.S_IFMT(f.st_mode) == stat.S_IFREG:
+                local_file = local_dir + "\\" + remote_path.replace('./', '').replace('/', '\\')
+                if os.path.isdir(local_file) == False:
+                    if os.path.exists(local_file) == False:
+                        print "mkdirs ", local_file
+                        os.makedirs(local_file)
+
+                remote_file = remote_dir + '/' + remote_path + "/" + f.filename
+                print remote_file + " ======> " + local_file + "\\" + f.filename
+                # dir
+                # self.download(local_dir, remote_dir + "/" + f.)
+                try:
+                    self.sftp.get(remote_file, local_file + "/" + f.filename)
+                except Exception as err:
+                    print(err)
+
+
+import ConfigParser
 
 
 # sftp.mkdir('abc')
+class cfgFile():
+    def __init__(self, file):
+        self.file = file
+        self.config = ConfigParser.RawConfigParser()
+        self.config.read(self.file)
+
+    def getSectionOptionValue(self, section, option, def_value):
+        try:
+            return self.config.get(section, option)
+        except ConfigParser.NoSectionError:
+            self.config.add_section(section)
+            self.config.set(section, option, def_value)
+        except ConfigParser.NoOptionError:
+            self.config.set(section, option, def_value)
+        with open(self.file, 'wb') as configfile:
+            self.config.write(configfile)
+        return def_value
+
+    def setSectionOptionValue(self, section, option, value):
+        try:
+            self.config.set(section, option, value)
+        except ConfigParser.NoSectionError:
+            self.config.add_section(section)
+            self.config.set(section, option, value)
+        except ConfigParser.NoOptionError:
+            self.config.set(section, option, value)
+        with open(self.file, 'wb') as configfile:
+            self.config.write(configfile)
+
 
 # sftp.put(r'c:\test.txt', test.txt)
 class ConfigFile():
@@ -214,13 +266,53 @@ class ConfigFile():
 
 #########################################################
 if __name__ == '__main__':
-    cl = SSHConnect()
-    sftp = openSftp(cl)
+
+    try:
+        cl = SSHConnect()
+        sftp = openSftp(cl)
+    except Exception as e:
+        print e
+        exit(-1)
+
     while True:
-        cf = ConfigFile("ftp.txt")
-        cf.doFile(sftp)
-        cf.close()
-        input_value = raw_input('q:quit, other:continue')
+
+        # cf = ConfigFile("ftp.txt")
+        # cf.doFile(sftp)
+        # cf.close()
+
+        cfg = cfgFile("conf.cfg")
+
+        localdir = cfg.getSectionOptionValue("putdir", "localdir", "")
+        remotedir = cfg.getSectionOptionValue("putdir", "remotedir", "")
+        work = cfg.getSectionOptionValue("putdir", "work", "off")
+
+        if work == "on" and localdir != "" and remotedir != "":
+            # print 'putdir ...... ' + localdir, '  --->  ', remotedir
+            # sftp.upload(localdir, remotedir)
+            print " OK !!!"
+        else:
+            print "putdir param error"
+
+        localdir = cfg.getSectionOptionValue("getdir", "localdir", "")
+        remotedir = cfg.getSectionOptionValue("getdir", "remotedir", "")
+        remotepath = cfg.getSectionOptionValue("getdir", "remotepath", "")
+        work = cfg.getSectionOptionValue("getdir", "work", "off")
+
+        remotefile = remotedir + "/" + remotepath
+        if work == "on" and localdir != "" and remotefile != "":
+            print 'getdir ...... ' + localdir, '  <----  ', remotedir, '/', remotepath
+            sftp.download(localdir, remotedir, remotepath)
+            print " OK !!!"
+        else:
+            print "getdir param error"
+
+        print cfg.getSectionOptionValue("put", "localdir", "")
+        print cfg.getSectionOptionValue("put", "remotedir", "")
+        print cfg.getSectionOptionValue("get", "localdir", "")
+        print cfg.getSectionOptionValue("get", "remotedir", "")
+        print cfg.getSectionOptionValue("cmd", "num", "1")
+        # exit(-1)
+        input_value = 'q'  # raw_input('q:quit, other:continue')
         if input_value == 'q':
             break
         if input_value == 'Q':
