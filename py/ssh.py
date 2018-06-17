@@ -142,8 +142,29 @@ class Sftp():
         return
 
     def download(self, local_dir, remote_dir, remote_path):
-        files = self.sftp.listdir_attr(remote_dir + '/' + remote_path)
-        # print " d            ,", remote_dir
+        print " d            ,", remote_dir + '/' + remote_path
+        stattmp = self.sftp.stat(remote_dir + '/' + remote_path)
+        if stat.S_IFMT(stattmp.st_mode) == stat.S_IFREG:
+
+            local_file = local_dir + "\\" + remote_path.replace('./', '').replace('/', '\\')
+            local_file_dir = local_file[:local_file.rfind('\\')]
+            if os.path.isdir(local_file_dir) == False:
+                if os.path.exists(local_file_dir) == False:
+                    print "mkdirs ", local_file_dir
+                    os.makedirs(local_file_dir)
+
+            remote_file = remote_dir + '/' + remote_path
+            print remote_file + " ======> " + local_file
+            # dir
+            # self.download(local_dir, remote_dir + "/" + f.)
+            try:
+                self.sftp.get(remote_file, local_file)
+            except Exception as err:
+                print(err)
+            return
+        else:
+            files = self.sftp.listdir_attr(remote_dir + '/' + remote_path)
+
         # Todo
         # print files
         for f in files:
