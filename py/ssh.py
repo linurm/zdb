@@ -308,8 +308,8 @@ if __name__ == '__main__':
         work = cfg.getSectionOptionValue("putdir", "work", "off")
 
         if work == "on" and localdir != "" and remotedir != "":
-            # print 'putdir ...... ' + localdir, '  --->  ', remotedir
-            # sftp.upload(localdir, remotedir)
+            print 'putdir ...... ' + localdir, '  --->  ', remotedir
+            sftp.upload(localdir, remotedir)
             print " OK !!!"
         else:
             print "putdir param error"
