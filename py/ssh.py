@@ -2,6 +2,7 @@ import paramiko
 import os
 import stat
 
+ipAddr = '192.168.2.100'
 port = 22
 username = 'root'
 password = '123456'
