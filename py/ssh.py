@@ -2,7 +2,6 @@ import paramiko
 import os
 import stat
 
-ipAddr = '192.168.2.100'
 port = 22
 username = 'root'
 password = '123456'
@@ -10,7 +9,6 @@ password = '123456'
 # win:\\
 # unix:/
 localDir = "G:\\platform-tools\\add"
-remoteDir = "/home/rk3288/9d/lollipop/kernel"
 
 
 ######################################################################
@@ -333,6 +331,22 @@ if __name__ == '__main__':
         print cfg.getSectionOptionValue("get", "remotedir", "")
         print cfg.getSectionOptionValue("cmd", "num", "1")
         # exit(-1)
+        print cfg.getSectionOptionValue("cmd", "cmd", "")
+
+        cmdnum = cfg.getSectionOptionValue("cmd", "num", "1")
+        for i in range(1,int(cmdnum)+1):
+            cmd = cfg.getSectionOptionValue("cmd", "cmd"+str(i), "ls")
+            print cmd
+            if sftp.exec_command(cmd[1:-1]) != 0:
+                break
+        getnum = cfg.getSectionOptionValue("get", "num", "1")
+        for i in range(1, int(getnum) + 1):
+            localfile = cfg.getSectionOptionValue("get", "localfile" + str(i), "ls")
+            remotefile = cfg.getSectionOptionValue("get", "remotefile" + str(i), "ls")
+            print localfile
+            print remotefile
+            print 'get ...... ' + remotefile, '  ---->  ', localfile,
+            sftp.Get(remotefile, localfile)
         input_value = 'q'  # raw_input('q:quit, other:continue')
         if input_value == 'q':
             break
