@@ -330,8 +330,6 @@ if __name__ == '__main__':
         print cfg.getSectionOptionValue("put", "remotedir", "")
         print cfg.getSectionOptionValue("get", "localdir", "")
         print cfg.getSectionOptionValue("get", "remotedir", "")
-        print cfg.getSectionOptionValue("cmd", "num", "1")
-        # exit(-1)
         print cfg.getSectionOptionValue("cmd", "cmd", "")
 
         cmdnum = cfg.getSectionOptionValue("cmd", "num", "1")
