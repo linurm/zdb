@@ -286,7 +286,7 @@ class ConfigFile():
 
 #########################################################
 if __name__ == '__main__':
-
+    exit_flag = False
     try:
         cl = SSHConnect()
         sftp = openSftp(cl)
@@ -296,10 +296,6 @@ if __name__ == '__main__':
 
     while True:
 
-        # cf = ConfigFile("ftp.txt")
-        # cf.doFile(sftp)
-        # cf.close()
-
         cfg = cfgFile("conf.cfg")
 
         localdir = cfg.getSectionOptionValue("putdir", "localdir", "")
@@ -307,8 +303,8 @@ if __name__ == '__main__':
         work = cfg.getSectionOptionValue("putdir", "work", "off")
 
         if work == "on" and localdir != "" and remotedir != "":
-            print 'putdir ...... ' + localdir, '  --->  ', remotedir
-            sftp.upload(localdir, remotedir)
+            # print 'putdir ...... ' + localdir, '  --->  ', remotedir
+            # sftp.upload(localdir, remotedir)
             print " OK !!!"
         else:
             print "putdir param error"
@@ -326,25 +322,37 @@ if __name__ == '__main__':
         else:
             print "getdir param error"
 
-        print cfg.getSectionOptionValue("put", "localdir", "")
-        print cfg.getSectionOptionValue("put", "remotedir", "")
-        print cfg.getSectionOptionValue("get", "localdir", "")
-        print cfg.getSectionOptionValue("get", "remotedir", "")
-        print cfg.getSectionOptionValue("cmd", "cmd", "")
+        # print cfg.getSectionOptionValue("put", "localfile", "")
+        # print cfg.getSectionOptionValue("put", "remotefile", "")
+
+        # print cfg.getSectionOptionValue("get", "localfile", "")
+        # print cfg.getSectionOptionValue("get", "remotefile", "")
+        # print cfg.getSectionOptionValue("cmd", "cmd", "")
+        putnum = cfg.getSectionOptionValue("put", "num", "0")
+        for i in range(1, int(putnum) + 1):
+            localfile = cfg.getSectionOptionValue("put", "localfile" + str(i), "ls")
+            remotefile = cfg.getSectionOptionValue("put", "remotefile" + str(i), "ls")
+            # print localfile
+            # print remotefile
+            print 'put ...... ' + localfile, '  ---->  ', remotefile
+            sftp.Put(localfile, remotefile)
 
         cmdnum = cfg.getSectionOptionValue("cmd", "num", "1")
-        for i in range(1,int(cmdnum)+1):
-            cmd = cfg.getSectionOptionValue("cmd", "cmd"+str(i), "ls")
+        for i in range(1, int(cmdnum) + 1):
+            cmd = cfg.getSectionOptionValue("cmd", "cmd" + str(i), "ls")
             print cmd
             if sftp.exec_command(cmd[1:-1]) != 0:
+                exit_flag = True
                 break
-        getnum = cfg.getSectionOptionValue("get", "num", "1")
+        if exit_flag:
+            break
+        getnum = cfg.getSectionOptionValue("get", "num", "0")
         for i in range(1, int(getnum) + 1):
             localfile = cfg.getSectionOptionValue("get", "localfile" + str(i), "ls")
             remotefile = cfg.getSectionOptionValue("get", "remotefile" + str(i), "ls")
-            print localfile
-            print remotefile
-            print 'get ...... ' + remotefile, '  ---->  ', localfile,
+            # print localfile
+            # print remotefile
+            print 'get ...... ' + remotefile, '  ---->  ', localfile
             sftp.Get(remotefile, localfile)
         input_value = 'q'  # raw_input('q:quit, other:continue')
         if input_value == 'q':
