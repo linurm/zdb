@@ -1,0 +1,84 @@
+#!/bin/bash
+echo $0 $@
+
+if [ ! -f diff.txt ]
+then
+	echo "create diff.txt"
+	exit
+else
+	echo "parsing diff.txt "
+fi
+
+
+function get_make_command()
+{
+  echo doAll
+}
+
+function makeTime()
+{
+    local start_time=$(date +"%s")
+	
+    $(get_make_command) "$@"
+	
+    local ret=$?
+    local end_time=$(date +"%s")
+    local tdiff=$(($end_time-$start_time))
+    local hours=$(($tdiff / 3600 ))
+    local mins=$((($tdiff % 3600) / 60))
+    local secs=$(($tdiff % 60))
+    local ncolors=$(tput colors 2>/dev/null)
+    if [ -n "$ncolors" ] && [ $ncolors -ge 8 ]; then
+        color_failed="\e[0;31m"
+        color_success="\e[0;32m"
+        color_reset="\e[00m"
+    else
+        color_failed=""
+        color_success=""
+        color_reset=""
+    fi
+    echo
+    if [ $ret -eq 0 ] ; then
+        echo -n -e "${color_success}#### make completed successfully "
+    else
+        echo -n -e "${color_failed}#### make failed to build some targets "
+    fi
+    if [ $hours -gt 0 ] ; then
+        printf "(%02g:%02g:%02g (hh:mm:ss))" $hours $mins $secs
+
+	echo $hours $mins $secs >> t.txt
+    elif [ $mins -gt 0 ] ; then
+        printf "(%02g:%02g (mm:ss))" $mins $secs
+    elif [ $secs -gt 0 ] ; then
+        printf "(%s seconds)" $secs
+    fi
+    echo -e " ####${color_reset}"
+    echo
+    return $ret
+}
+
+function txt2patch()
+{
+
+	echo -ne "\033[37;40m cat diff.txt | grep $@ | grep 'and' | awk '{print "\$2 \$4"}' | xargs  -t -n2 diff -urN \033[0m"
+	echo -e ""
+	
+	
+	cat diff.txt | grep "$@" | grep 'and' | awk '{print $2 " " $4}' | xargs  -t -n2 diff -urN > gen.patch
+	
+	echo -ne "\033[37;40m ===========>   gen.patch   \033[0m"
+	echo -e ""
+	echo -e "\033[0m  OK"
+	#sleep 1
+	#ls -l
+	
+}
+
+function doAll()
+{
+	txt2patch $@
+	#ls -l
+}
+
+makeTime $@
+
